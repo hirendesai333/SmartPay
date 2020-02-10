@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "446306873571",
+    "firebase_url": "https://smart-pay-6270b.firebaseio.com",
+    "project_id": "smart-pay-6270b",
+    "storage_bucket": "smart-pay-6270b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446306873571:android:191fc1d709afd2f75955d6",
+        "android_client_info": {
+          "package_name": "com.example.smartpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446306873571-hgo8plt1bru222olc30hobd7lrp6c3h3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartpay",
+            "certificate_hash": "dea7cd61eda978f13216b310a50a0e85d502e1c4"
+          }
+        },
+        {
+          "client_id": "446306873571-ea8van65sefm5741ivbcse8dp6r9p0l9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMpTQ8PdbHBez6L0ve2fArzZMA_3LOizk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446306873571-ea8van65sefm5741ivbcse8dp6r9p0l9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

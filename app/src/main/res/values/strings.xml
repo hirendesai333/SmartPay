@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Smart Pay</string>
+
+    <string name="close">close</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="messages_header">message header</string>
+    <string name="signature_title">signature title</string>
+    <string name="reply_title">reply title</string>
+    <string name="sync_header">sync header</string>
+    <string name="sync_title">sync title</string>
+    <string name="attachment_summary_off">summary off</string>
+    <string name="attachment_summary_on">summary on</string>
+    <string name="attachment_title">title attachment</string>
+
 </resources>

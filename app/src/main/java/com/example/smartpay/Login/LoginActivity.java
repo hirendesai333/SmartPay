@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.smartpay.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,11 +31,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText mCountryCode;
     private EditText mPhoneNumber;
+    private EditText usernameET;
 
     private Button mGenerateBtn;
     private ProgressBar mLoginProgress;
-
-    private TextView mLoginFeedbackText;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     
@@ -51,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         mPhoneNumber = findViewById(R.id.phone_number_text);
         mGenerateBtn = findViewById(R.id.generate_btn);
         mLoginProgress = findViewById(R.id.login_progress_bar);
+        usernameET = findViewById(R.id.usernameET);
 
         mGenerateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,8 +61,8 @@ public class LoginActivity extends AppCompatActivity {
                 String complete_phone_number = "+" + country_code + phone_number;
 
                 if(country_code.isEmpty() || phone_number.isEmpty()){
-                    mLoginFeedbackText.setText("Please fill in the form to continue.");
-                    mLoginFeedbackText.setVisibility(View.VISIBLE);
+                    /*mLoginFeedbackText.setText("Please fill in the form to continue.");
+                    mLoginFeedbackText.setVisibility(View.VISIBLE);*/
                 } else {
                     mLoginProgress.setVisibility(View.VISIBLE);
                     mGenerateBtn.setEnabled(false);
@@ -87,8 +87,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                mLoginFeedbackText.setText("Verification Failed, please try again.");
-                mLoginFeedbackText.setVisibility(View.VISIBLE);
+                /*mLoginFeedbackText.setText("Verification Failed, please try again.");
+                mLoginFeedbackText.setVisibility(View.VISIBLE);*/
                 mLoginProgress.setVisibility(View.INVISIBLE);
                 mGenerateBtn.setEnabled(true);
             }
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(otpIntent);
                             }
                         },
-                        10000);
+                        5000);
             }
         };
 
@@ -130,8 +130,8 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
-                                mLoginFeedbackText.setVisibility(View.VISIBLE);
-                                mLoginFeedbackText.setText("There was an error verifying OTP");
+                                /*mLoginFeedbackText.setVisibility(View.VISIBLE);
+                                mLoginFeedbackText.setText("There was an error verifying OTP");*/
                             }
                         }
                         mLoginProgress.setVisibility(View.INVISIBLE);
@@ -141,9 +141,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToHome() {
+        String userName = usernameET.getText().toString();
         Intent homeIntent = new Intent(LoginActivity.this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        homeIntent.putExtra("message_key",userName);
+
+        SharedPreferences sharedPref = getSharedPreferences("MyData",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("name",userName);
+        editor.commit();
+
         startActivity(homeIntent);
         finish();
     }

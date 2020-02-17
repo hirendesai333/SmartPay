@@ -1,8 +1,5 @@
 package com.example.smartpay.Dto;
 
-import android.graphics.drawable.Icon;
-import android.widget.ImageView;
-
 public class ListItem {
 
     private String name;
@@ -10,16 +7,6 @@ public class ListItem {
     private String weight;
     private String image;
     private String qty;
-
-    /*public ListItem() {
-
-    }
-
-    public ListItem(String name, String price, String weight) {
-        this.name = name;
-        this.price = price;
-        this.weight = weight;
-    }*/
 
     public void setQty(String qty) {
         this.qty = qty;

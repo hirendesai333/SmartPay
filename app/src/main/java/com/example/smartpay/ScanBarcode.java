@@ -4,15 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.example.smartpay.Adapter.CustomListAdapter;
 import com.example.smartpay.Dto.AddListItem;
@@ -30,17 +33,18 @@ import com.shreyaspatil.EasyUpiPayment.model.TransactionDetails;
 
 import java.util.ArrayList;
 
-
-public class ScanBarcode extends AppCompatActivity implements PaymentStatusListener {
+public class ScanBarcode extends AppCompatActivity {
 
     FirebaseDatabase database;
     DatabaseReference ref;
     ArrayList<ListItem> list = new ArrayList<>();
     ArrayList<AddListItem> results = new ArrayList<>();
 
-
     Button scanAgainBtn;
     Button checkoutBtn;
+
+    String amount,note,name,upiId;
+    final int UPI_PAYMENT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,6 @@ public class ScanBarcode extends AppCompatActivity implements PaymentStatusListe
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 ListItem value = dataSnapshot.getValue(ListItem.class);
                 list.add(value);
-
             }
 
             @Override
@@ -93,24 +96,97 @@ public class ScanBarcode extends AppCompatActivity implements PaymentStatusListe
             }
         });
 
-        final EasyUpiPayment easyUpiPayment = new EasyUpiPayment.Builder()
-                .with(ScanBarcode.this)
-                .setPayeeVpa("9408453375@upi")
-                .setPayeeName("hp")
-                .setTransactionId("001016264631")
-                .setTransactionRefId("CICAgKDu8OKETA")
-                .setDescription(":)")
-                .setAmount("1.00")
-                .build();
-
         checkoutBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                easyUpiPayment.startPayment();
-
+                amount = "1";
+                upiId = "9408453375@upi";
+                name = "hp";
+                note = "Go ahead & make your day!";
+                pay(amount, upiId, name, note);
             }
         });
     }
+
+    private void pay(String amount, String upiId, String name, String note) {
+
+        Uri uri = Uri.parse("upi://pay").buildUpon()
+                .appendQueryParameter("pa", upiId)
+                .appendQueryParameter("pn", name)
+                .appendQueryParameter("tn", note)
+                .appendQueryParameter("am", amount)
+                .appendQueryParameter("cu", "INR")
+                .build();
+
+
+        Intent upiPayIntent = new Intent(Intent.ACTION_VIEW);
+        upiPayIntent.setData(uri);
+
+        // will always show a dialog to user to choose an app
+        Intent chooser = Intent.createChooser(upiPayIntent, "Pay with");
+
+        // check if intent resolves
+        if(null != chooser.resolveActivity(getPackageManager())) {
+            startActivityForResult(chooser, UPI_PAYMENT);
+        } else {
+            Toast.makeText(ScanBarcode.this,"No UPI app found, please install one to continue",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void upiPaymentDataOperation(ArrayList<String> data) {
+        if (isConnectionAvailable(ScanBarcode.this)) {
+            String str = data.get(0);
+            Log.d("UPIPAY", "upiPaymentDataOperation: "+str);
+            String paymentCancel = "";
+            if(str == null) str = "discard";
+            String status = "";
+            String approvalRefNo = "";
+            String response[] = str.split("&");
+            for (int i = 0; i < response.length; i++) {
+                String equalStr[] = response[i].split("=");
+                if(equalStr.length >= 2) {
+                    if (equalStr[0].toLowerCase().equals("Status".toLowerCase())) {
+                        status = equalStr[1].toLowerCase();
+                    }
+                    else if (equalStr[0].toLowerCase().equals("ApprovalRefNo".toLowerCase()) || equalStr[0].toLowerCase().equals("txnRef".toLowerCase())) {
+                        approvalRefNo = equalStr[1];
+                    }
+                }
+                else {
+                    paymentCancel = "Payment cancelled by user.";
+                }
+            }
+
+            if (status.equals("success")) {
+                //Code to handle successful transaction here.
+                Toast.makeText(ScanBarcode.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
+                Log.d("UPI", "responseStr: "+approvalRefNo);
+            }
+            else if("Payment cancelled by user.".equals(paymentCancel)) {
+                Toast.makeText(ScanBarcode.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(ScanBarcode.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(ScanBarcode.this, "Internet connection is not available. Please check and try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static boolean isConnectionAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnected()
+                    && netInfo.isConnectedOrConnecting()
+                    && netInfo.isAvailable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // Get the results:
     @Override
@@ -123,28 +199,18 @@ public class ScanBarcode extends AppCompatActivity implements PaymentStatusListe
             } else {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 String strScanFruitName = result.getContents().toString();
-                Log.d("Size ---> ", String.valueOf(list.size()));
                 if (list.size() > 0) {
-                    Log.d("If ---> ", "Ok");
 
                     for (int i = 0; i < list.size(); i++) {
-                        Log.d("If For---> ", "Ok");
 
                         String strFruitName = list.get(i).getName();
                         if (strFruitName.equals(strScanFruitName)) {
-                            Log.d("If For If---> ", "Ok");
 
-                            /*Toast.makeText(this, "Name ---> " + list.get(i).getName() + "\n"
-                                    + "Price ---> " + list.get(i).getPrice() + "\n"
-                                    + "Weight ---> " + list.get(i).getWeight(), Toast.LENGTH_SHORT).show();*/
                             if (results.size() > 0) {
                                 for (int j = 0; j < results.size(); j++) {
-                                    Log.d("Position ---> ", String.valueOf(j));
                                     String strName = results.get(j).getName();
-                                    Log.d("STR NAME ---> ", strName);
                                     if (strName.equals(strScanFruitName)) {
                                         int indexOf = j + 1;
-                                        Log.d("Index Of ---> ", String.valueOf(indexOf));
 
                                         int iQty = Integer.parseInt(results.get(j).getQty());
                                         int newQty = iQty + 1;
@@ -155,7 +221,6 @@ public class ScanBarcode extends AppCompatActivity implements PaymentStatusListe
                                         user1.setWeight(list.get(i).getWeight());
                                         user1.setQty(String.valueOf(newQty));
                                         user1.setImage(list.get(i).getImage());
-//                                    results.add(user1);
 
                                         results.set(j, user1);
                                         ArrayList userList = results;
@@ -165,7 +230,6 @@ public class ScanBarcode extends AppCompatActivity implements PaymentStatusListe
 
                                     } else {
                                         if (results.size() == (j + 1)) {
-                                            Log.d("Else ---> ", "ok");
 
                                             AddListItem user1 = new AddListItem();
                                             user1.setName(list.get(i).getName());
@@ -205,41 +269,35 @@ public class ScanBarcode extends AppCompatActivity implements PaymentStatusListe
                 }
             }
         }
+
+        switch (requestCode) {
+            case UPI_PAYMENT:
+                if ((RESULT_OK == resultCode) || (resultCode == 11)) {
+                    if (data != null) {
+                        String trxt = data.getStringExtra("response");
+                        Log.d("UPI", "onActivityResult: " + trxt);
+                        ArrayList<String> dataList = new ArrayList<>();
+                        dataList.add(trxt);
+                        upiPaymentDataOperation(dataList);
+                    } else {
+                        Log.d("UPI", "onActivityResult: " + "Return data is null");
+                        ArrayList<String> dataList = new ArrayList<>();
+                        dataList.add("nothing");
+                        upiPaymentDataOperation(dataList);
+                    }
+                } else {
+                    Log.d("UPI", "onActivityResult: " + "Return data is null"); //when user simply back without payment
+                    ArrayList<String> dataList = new ArrayList<>();
+                    dataList.add("nothing");
+                    upiPaymentDataOperation(dataList);
+                }
+                break;
+        }
     }
 
     @Override
     public void onBackPressed() {
-        this.finish();
+        super.finish();
     }
 
-    @Override
-    public void onTransactionCompleted(TransactionDetails transactionDetails) {
-        // Transaction Completed
-        Log.d("TransactionDetails", transactionDetails.toString());
-    }
-
-    @Override
-    public void onTransactionSuccess() {
-        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onTransactionSubmitted() {
-        Toast.makeText(this, "Pending | Submitted", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onTransactionFailed() {
-        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onTransactionCancelled() {
-        Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onAppNotFound() {
-        Toast.makeText(this, "App Not Found", Toast.LENGTH_SHORT).show();
-    }
 }

@@ -8,18 +8,6 @@ public class AddListItem {
     private String image;
     private String qty;
 
-    /*public ListItem() {
-
-    }
-
-    public ListItem(String name, String price, String weight) {
-        this.name = name;
-        this.price = price;
-        this.weight = weight;
-    }*/
-
-
-
     public void setQty(String qty) {
         this.qty = qty;
     }

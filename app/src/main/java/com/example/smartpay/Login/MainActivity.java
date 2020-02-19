@@ -1,39 +1,30 @@
 package com.example.smartpay.Login;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smartpay.MapsActivity;
 import com.example.smartpay.ScanBarcode;
 import com.example.smartpay.R;
+import com.example.smartpay.UserActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.ref.Reference;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,10 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private Button mLogoutBtn;
     private Button scanBtn;
     private Button findStoreBtn;
-
-    TextView username;
-    public static final String DEFAULT = "N/A";
-
     private CircleImageView ProfileImage;
     private static final int PICK_IMAGE = 1;
     Uri imageUri;
@@ -91,12 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        username = findViewById(R.id.profile_title);
-        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
-        String name = sharedPreferences.getString("name",DEFAULT);
-        username.setText("Welcome "+name);
-
-        ProfileImage = (CircleImageView) findViewById(R.id.profile_image);
+        ProfileImage = findViewById(R.id.profile_image);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
 
         case R.id.profile:
-
+            Intent profileIntent = new Intent(MainActivity.this, UserActivity.class);
+            startActivity(profileIntent);
             return(true);
         case R.id.exit:
             finish();

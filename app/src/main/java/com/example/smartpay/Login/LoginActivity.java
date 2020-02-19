@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.smartpay.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(country_code.isEmpty() || phone_number.isEmpty()){
                     /*mLoginFeedbackText.setText("Please fill in the form to continue.");
                     mLoginFeedbackText.setVisibility(View.VISIBLE);*/
+                    Toast.makeText(LoginActivity.this, "Please fill in the form to continue.", Toast.LENGTH_SHORT).show();
                 } else {
                     mLoginProgress.setVisibility(View.VISIBLE);
                     mGenerateBtn.setEnabled(false);
@@ -89,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
                 /*mLoginFeedbackText.setText("Verification Failed, please try again.");
                 mLoginFeedbackText.setVisibility(View.VISIBLE);*/
+                Toast.makeText(LoginActivity.this, "Verification Failed, please try again.", Toast.LENGTH_SHORT).show();
                 mLoginProgress.setVisibility(View.INVISIBLE);
                 mGenerateBtn.setEnabled(true);
             }
@@ -105,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(otpIntent);
                             }
                         },
-                        5000);
+                        10000);
             }
         };
 
@@ -129,9 +133,10 @@ public class LoginActivity extends AppCompatActivity {
                             // ...
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
+                                // The verif=ication code entered was invalid
                                 /*mLoginFeedbackText.setVisibility(View.VISIBLE);
                                 mLoginFeedbackText.setText("There was an error verifying OTP");*/
+                                Toast.makeText(LoginActivity.this, "There was an error verifying OTP", Toast.LENGTH_SHORT).show();
                             }
                         }
                         mLoginProgress.setVisibility(View.INVISIBLE);
@@ -141,15 +146,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendUserToHome() {
+
         String userName = usernameET.getText().toString();
+        String userNum = mPhoneNumber.getText().toString();
+
         Intent homeIntent = new Intent(LoginActivity.this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        homeIntent.putExtra("message_key",userName);
 
-        SharedPreferences sharedPref = getSharedPreferences("MyData",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        SharedPreferences sharedPreferences = getSharedPreferences("MYDATA",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name",userName);
+//        editor.putString("num",userNum);
         editor.commit();
 
         startActivity(homeIntent);

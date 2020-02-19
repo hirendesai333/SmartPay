@@ -27,9 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.shreyaspatil.EasyUpiPayment.EasyUpiPayment;
-import com.shreyaspatil.EasyUpiPayment.listener.PaymentStatusListener;
-import com.shreyaspatil.EasyUpiPayment.model.TransactionDetails;
 
 import java.util.ArrayList;
 
@@ -43,7 +40,9 @@ public class ScanBarcode extends AppCompatActivity {
     Button scanAgainBtn;
     Button checkoutBtn;
 
-    String amount,note,name,upiId;
+    TextView textViewAmount;
+
+    String amount, note, name, upiId;
     final int UPI_PAYMENT = 0;
 
     @Override
@@ -88,6 +87,7 @@ public class ScanBarcode extends AppCompatActivity {
 
         scanAgainBtn = findViewById(R.id.scanAgainBtn);
         checkoutBtn = findViewById(R.id.checkoutBtn);
+        textViewAmount = findViewById(R.id.textViewAmount);
 
         scanAgainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class ScanBarcode extends AppCompatActivity {
             }
         });
 
-        checkoutBtn.setOnClickListener(new View.OnClickListener(){
+        checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 amount = "1";
@@ -118,7 +118,6 @@ public class ScanBarcode extends AppCompatActivity {
                 .appendQueryParameter("cu", "INR")
                 .build();
 
-
         Intent upiPayIntent = new Intent(Intent.ACTION_VIEW);
         upiPayIntent.setData(uri);
 
@@ -126,10 +125,10 @@ public class ScanBarcode extends AppCompatActivity {
         Intent chooser = Intent.createChooser(upiPayIntent, "Pay with");
 
         // check if intent resolves
-        if(null != chooser.resolveActivity(getPackageManager())) {
+        if (null != chooser.resolveActivity(getPackageManager())) {
             startActivityForResult(chooser, UPI_PAYMENT);
         } else {
-            Toast.makeText(ScanBarcode.this,"No UPI app found, please install one to continue",Toast.LENGTH_SHORT).show();
+            Toast.makeText(ScanBarcode.this, "No UPI app found, please install one to continue", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -137,23 +136,21 @@ public class ScanBarcode extends AppCompatActivity {
     private void upiPaymentDataOperation(ArrayList<String> data) {
         if (isConnectionAvailable(ScanBarcode.this)) {
             String str = data.get(0);
-            Log.d("UPIPAY", "upiPaymentDataOperation: "+str);
+            Log.d("UPIPAY", "upiPaymentDataOperation: " + str);
             String paymentCancel = "";
-            if(str == null) str = "discard";
+            if (str == null) str = "discard";
             String status = "";
             String approvalRefNo = "";
             String response[] = str.split("&");
             for (int i = 0; i < response.length; i++) {
                 String equalStr[] = response[i].split("=");
-                if(equalStr.length >= 2) {
+                if (equalStr.length >= 2) {
                     if (equalStr[0].toLowerCase().equals("Status".toLowerCase())) {
                         status = equalStr[1].toLowerCase();
-                    }
-                    else if (equalStr[0].toLowerCase().equals("ApprovalRefNo".toLowerCase()) || equalStr[0].toLowerCase().equals("txnRef".toLowerCase())) {
+                    } else if (equalStr[0].toLowerCase().equals("ApprovalRefNo".toLowerCase()) || equalStr[0].toLowerCase().equals("txnRef".toLowerCase())) {
                         approvalRefNo = equalStr[1];
                     }
-                }
-                else {
+                } else {
                     paymentCancel = "Payment cancelled by user.";
                 }
             }
@@ -161,12 +158,10 @@ public class ScanBarcode extends AppCompatActivity {
             if (status.equals("success")) {
                 //Code to handle successful transaction here.
                 Toast.makeText(ScanBarcode.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
-                Log.d("UPI", "responseStr: "+approvalRefNo);
-            }
-            else if("Payment cancelled by user.".equals(paymentCancel)) {
+                Log.d("UPI", "responseStr: " + approvalRefNo);
+            } else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(ScanBarcode.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Toast.makeText(ScanBarcode.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -200,6 +195,7 @@ public class ScanBarcode extends AppCompatActivity {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 String strScanFruitName = result.getContents().toString();
                 if (list.size() > 0) {
+                    double total = 0.0;
 
                     for (int i = 0; i < list.size(); i++) {
 
@@ -265,7 +261,16 @@ public class ScanBarcode extends AppCompatActivity {
 
                             }
                         }
+                        double t = Double.parseDouble(list.get(i).getPrice());
+
+                        total = total + t;
+
+                        textViewAmount.setText((int) total);
+
+                        Log.d("Total ---> ", String.valueOf(total));
+
                     }
+
                 }
             }
         }

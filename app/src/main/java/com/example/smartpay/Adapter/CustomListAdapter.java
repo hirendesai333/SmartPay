@@ -66,7 +66,7 @@ public class CustomListAdapter extends BaseAdapter {
                         "(" +
                         listData.get(position).getQty() +
                         ")" +
-                        " = " +
+                        " = " +"₹ "+
                         String.valueOf(totalPrice));
         holder.uWeight.setText(listData.get(position).getWeight());
         Picasso.get().load(listData.get(position).getImage()).into(holder.uImage);

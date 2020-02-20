@@ -42,7 +42,8 @@ public class ScanBarcode extends AppCompatActivity {
 
     TextView textViewAmount;
 
-    String amount, note, name, upiId;
+    Double amount;
+    String note, name, upiId;
     final int UPI_PAYMENT = 0;
 
     @Override
@@ -96,7 +97,7 @@ public class ScanBarcode extends AppCompatActivity {
             }
         });
 
-        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+        /*checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 amount = "1";
@@ -105,16 +106,16 @@ public class ScanBarcode extends AppCompatActivity {
                 note = "Go ahead & make your day!";
                 pay(amount, upiId, name, note);
             }
-        });
+        });*/
     }
 
-    private void pay(String amount, String upiId, String name, String note) {
+    private void pay(Double amount, String upiId, String name, String note) {
 
         Uri uri = Uri.parse("upi://pay").buildUpon()
                 .appendQueryParameter("pa", upiId)
                 .appendQueryParameter("pn", name)
                 .appendQueryParameter("tn", note)
-                .appendQueryParameter("am", amount)
+                .appendQueryParameter("am", String.valueOf(amount))
                 .appendQueryParameter("cu", "INR")
                 .build();
 
@@ -192,7 +193,7 @@ public class ScanBarcode extends AppCompatActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 String strScanFruitName = result.getContents().toString();
                 if (list.size() > 0) {
                     double total = 0.0;
@@ -222,6 +223,7 @@ public class ScanBarcode extends AppCompatActivity {
                                         ArrayList userList = results;
                                         final ListView lv = findViewById(R.id.listView);
                                         lv.setAdapter(new CustomListAdapter(this, userList));
+
                                         break;
 
                                     } else {
@@ -238,6 +240,7 @@ public class ScanBarcode extends AppCompatActivity {
                                             ArrayList userList = results;
                                             final ListView lv = findViewById(R.id.listView);
                                             lv.setAdapter(new CustomListAdapter(this, userList));
+
                                             break;
                                         }
 
@@ -261,14 +264,28 @@ public class ScanBarcode extends AppCompatActivity {
 
                             }
                         }
-                        double t = Double.parseDouble(list.get(i).getPrice());
 
-                        total = total + t;
+                    }
 
-                        textViewAmount.setText((int) total);
+                    if (results.size()>0){
+                        for (int i = 0;i<results.size();i++){
+                            double t = Double.parseDouble(results.get(i).getPrice()) * Double.parseDouble(results.get(i).getQty());
+                            total = total + t;
+                        }
 
-                        Log.d("Total ---> ", String.valueOf(total));
+                        textViewAmount.setText("Total amount : "+total);
 
+                        final double finalTotal = total;
+                        checkoutBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                amount = finalTotal;
+                                upiId = "9408453375@upi";
+                                name = "hp";
+                                note = "Go ahead & make your day!";
+                                pay(amount, upiId, name, note);
+                            }
+                        });
                     }
 
                 }

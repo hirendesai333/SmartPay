@@ -46,7 +46,6 @@ public class OtpActivity extends AppCompatActivity {
 
         mAuthVerificationId = getIntent().getStringExtra("AuthCredentials");
 
-        mOtpFeedback = findViewById(R.id.otp_form_feedback);
         mOtpProgress = findViewById(R.id.otp_progress_bar);
         mOtpText = findViewById(R.id.otp_text_view);
 

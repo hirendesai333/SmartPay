@@ -130,12 +130,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             sendUserToHome();
-                            // ...
+
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verif=ication code entered was invalid
-                                /*mLoginFeedbackText.setVisibility(View.VISIBLE);
-                                mLoginFeedbackText.setText("There was an error verifying OTP");*/
+
                                 Toast.makeText(LoginActivity.this, "There was an error verifying OTP", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -157,8 +155,12 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MYDATA",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name",userName);
-//        editor.putString("num",userNum);
         editor.commit();
+/*
+        SharedPreferences sharedPreferences2 = getSharedPreferences("MYDATA2",MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+        editor2.putString("num",userNum);
+        editor2.commit();*/
 
         startActivity(homeIntent);
         finish();

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -22,9 +23,11 @@ public class UserActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("MYDATA", MODE_PRIVATE);
         String name = sharedPreferences.getString("name",DEFAULT);
-//        String num = sharedPreferences.getString("num",DEFAULT);
         username.setText("Welcome "+name);
-//        userNum.setText(num);
+
+        /*SharedPreferences sharedPreferences2 = getSharedPreferences("MYDATA2", MODE_PRIVATE);
+        String num = sharedPreferences2.getString("num",DEFAULT);
+        userNum.setText(num);*/
 
     }
 }

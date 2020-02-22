@@ -19,11 +19,14 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        ActionBar actionBar = getSupportActionBar();
+        showGreetings();
+
+       /* ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("My Profile");
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.address)));
+*/
 
-        showGreetings();
+
     }
 
     private void showGreetings() {

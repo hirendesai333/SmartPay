@@ -273,7 +273,7 @@ public class ScanBarcode extends AppCompatActivity {
                             total = total + t;
                         }
 
-                        textViewAmount.setText("Total amount : "+total);
+                        textViewAmount.setText("Total amount : ₹"+total);
 
                         final double finalTotal = total;
                         checkoutBtn.setOnClickListener(new View.OnClickListener() {

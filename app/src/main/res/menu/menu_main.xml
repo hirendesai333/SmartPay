@@ -8,8 +8,8 @@
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/orderHistory"
-        android:title="Order History"
+        android:id="@+id/Offers"
+        android:title="Offers"
         app:showAsAction="never">
     </item>
     <item

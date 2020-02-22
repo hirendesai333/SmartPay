@@ -46,10 +46,10 @@ public class CustomListAdapter extends BaseAdapter {
         if (v == null) {
             v = layoutInflater.inflate(R.layout.list_row, null);
             holder = new ViewHolder();
-            holder.uName = (TextView) v.findViewById(R.id.name);
-            holder.uPrice = (TextView) v.findViewById(R.id.price);
-            holder.uWeight = (TextView) v.findViewById(R.id.weight);
-            holder.uImage = (ImageView) v.findViewById(R.id.imageView);
+            holder.uName =v.findViewById(R.id.name);
+            holder.uPrice =v.findViewById(R.id.price);
+            holder.uWeight =v.findViewById(R.id.weight);
+            holder.uImage = v.findViewById(R.id.imageView);
             v.setTag(holder);
         } else {
             holder = (ViewHolder) v.getTag();
@@ -61,7 +61,7 @@ public class CustomListAdapter extends BaseAdapter {
         double totalPrice = price * qty;
 
         holder.uName.setText(listData.get(position).getName());
-        holder.uPrice.setText(listData.get(position).getPrice());
+        holder.uPrice.setText("₹"+listData.get(position).getPrice());
         holder.uWeight.setText(listData.get(position).getQty() + " " + listData.get(position).getWeight());
         Picasso.get().load(listData.get(position).getImage()).into(holder.uImage);
 

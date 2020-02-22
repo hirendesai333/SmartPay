@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText mCountryCode;
     private EditText mPhoneNumber;
-    private EditText usernameET;
 
     private Button mGenerateBtn;
     private ProgressBar mLoginProgress;
@@ -52,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         mPhoneNumber = findViewById(R.id.phone_number_text);
         mGenerateBtn = findViewById(R.id.generate_btn);
         mLoginProgress = findViewById(R.id.login_progress_bar);
-        usernameET = findViewById(R.id.usernameET);
 
         mGenerateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,25 +143,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendUserToHome() {
 
-        String userName = usernameET.getText().toString();
-        String userNum = mPhoneNumber.getText().toString();
-
         Intent homeIntent = new Intent(LoginActivity.this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MYDATA",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name",userName);
-        editor.commit();
-/*
-        SharedPreferences sharedPreferences2 = getSharedPreferences("MYDATA2",MODE_PRIVATE);
-        SharedPreferences.Editor editor2 = sharedPreferences2.edit();
-        editor2.putString("num",userNum);
-        editor2.commit();*/
-
         startActivity(homeIntent);
         finish();
     }
-
 }

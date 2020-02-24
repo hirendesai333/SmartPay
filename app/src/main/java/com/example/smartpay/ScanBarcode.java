@@ -3,7 +3,10 @@ package com.example.smartpay;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -97,16 +100,6 @@ public class ScanBarcode extends AppCompatActivity {
             }
         });
 
-        /*checkoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                amount = "1";
-                upiId = "9408453375@upi";
-                name = "hp";
-                note = "Go ahead & make your day!";
-                pay(amount, upiId, name, note);
-            }
-        });*/
     }
 
     private void pay(Double amount, String upiId, String name, String note) {
@@ -153,6 +146,7 @@ public class ScanBarcode extends AppCompatActivity {
                     }
                 } else {
                     paymentCancel = "Payment cancelled by user.";
+
                 }
             }
 
@@ -162,6 +156,9 @@ public class ScanBarcode extends AppCompatActivity {
                 Log.d("UPI", "responseStr: " + approvalRefNo);
             } else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(ScanBarcode.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
+
+
+
             } else {
                 Toast.makeText(ScanBarcode.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
             }
@@ -193,8 +190,7 @@ public class ScanBarcode extends AppCompatActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-//                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                String strScanFruitName = result.getContents().toString();
+                String strScanFruitName = result.getContents();
                 if (list.size() > 0) {
                     double total = 0.0;
 
@@ -207,7 +203,6 @@ public class ScanBarcode extends AppCompatActivity {
                                 for (int j = 0; j < results.size(); j++) {
                                     String strName = results.get(j).getName();
                                     if (strName.equals(strScanFruitName)) {
-                                        int indexOf = j + 1;
 
                                         int iQty = Integer.parseInt(results.get(j).getQty());
                                         int newQty = iQty + 1;
@@ -247,7 +242,6 @@ public class ScanBarcode extends AppCompatActivity {
                                     }
                                 }
 
-
                             } else {
                                 AddListItem user1 = new AddListItem();
                                 user1.setName(list.get(i).getName());
@@ -267,13 +261,13 @@ public class ScanBarcode extends AppCompatActivity {
 
                     }
 
-                    if (results.size()>0){
-                        for (int i = 0;i<results.size();i++){
+                    if (results.size() > 0) {
+                        for (int i = 0; i < results.size(); i++) {
                             double t = Double.parseDouble(results.get(i).getPrice()) * Double.parseDouble(results.get(i).getQty());
                             total = total + t;
                         }
 
-                        textViewAmount.setText("Total amount : ₹"+total);
+                        textViewAmount.setText("Total amount : ₹" + total);
 
                         final double finalTotal = total;
                         checkoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +278,10 @@ public class ScanBarcode extends AppCompatActivity {
                                 name = "hp";
                                 note = "Go ahead & make your day!";
                                 pay(amount, upiId, name, note);
+
+
+                                Log.d("MainActivity","payment");
+
                             }
                         });
                     }

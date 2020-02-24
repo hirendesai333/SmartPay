@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText mCountryCode;
     private EditText mPhoneNumber;
+    private EditText mUserName;
 
     private Button mGenerateBtn;
     private ProgressBar mLoginProgress;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         mCurrentUser = mAuth.getCurrentUser();
 
         mCountryCode = findViewById(R.id.country_code_text);
+        mUserName = findViewById(R.id.usernameET);
         mPhoneNumber = findViewById(R.id.phone_number_text);
         mGenerateBtn = findViewById(R.id.generate_btn);
         mLoginProgress = findViewById(R.id.login_progress_bar);
@@ -146,6 +148,13 @@ public class LoginActivity extends AppCompatActivity {
         Intent homeIntent = new Intent(LoginActivity.this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("NAME_KEY", mUserName.getText().toString());
+        editor.putString("NUM_KEY",mPhoneNumber.getText().toString());
+        editor.apply();
+
         startActivity(homeIntent);
         finish();
     }

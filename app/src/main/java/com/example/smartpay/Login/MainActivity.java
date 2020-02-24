@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             return(true);
 
         case R.id.Offers:
-
+            Toast.makeText(this, "Currently there are no offers Available!", Toast.LENGTH_SHORT).show();
             return (true);
             
         case R.id.exit:

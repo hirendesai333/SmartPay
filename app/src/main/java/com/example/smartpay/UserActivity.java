@@ -1,18 +1,18 @@
 package com.example.smartpay;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.drawable.ColorDrawable;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Calendar;
 
 public class UserActivity extends AppCompatActivity {
 
     TextView greetingText;
+    TextView UserName;
+    TextView UserNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +21,15 @@ public class UserActivity extends AppCompatActivity {
 
         showGreetings();
 
-       /* ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("My Profile");
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.address)));
-*/
+        UserName = findViewById(R.id.userName);
+        UserNum = findViewById(R.id.userNum);
 
+        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
+        String name = sp.getString("NAME_KEY", null);
+        String num = sp.getString("NUM_KEY", null);
+
+        UserName.setText(name);
+        UserNum.setText(num);
 
     }
 

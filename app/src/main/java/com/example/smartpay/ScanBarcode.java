@@ -279,7 +279,6 @@ public class ScanBarcode extends AppCompatActivity {
                                 note = "Go ahead & make your day!";
                                 pay(amount, upiId, name, note);
 
-
                                 Log.d("MainActivity","payment");
 
                             }

@@ -101,7 +101,8 @@ public class SearchActivity extends AppCompatActivity {
         switch(item.getItemId()) {
 
         case R.id.map:
-
+            Intent indoorIntent = new Intent(getApplicationContext(),IndoorActivity.class);
+            startActivity(indoorIntent);
             return(true);
         case R.id.exit:
             finish();

@@ -2,17 +2,19 @@ package com.example.smartpay;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.Calendar;
 
 public class UserActivity extends AppCompatActivity {
 
-    TextView greetingText;
-    TextView UserName;
-    TextView UserNum;
+    TextView greetingText,UserName,UserNum,UserEmail;
+
+    ImageView editImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +25,25 @@ public class UserActivity extends AppCompatActivity {
 
         UserName = findViewById(R.id.userName);
         UserNum = findViewById(R.id.userNum);
+        UserEmail = findViewById(R.id.emailET);
 
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         String name = sp.getString("NAME_KEY", null);
         String num = sp.getString("NUM_KEY", null);
+        String email = sp.getString("EMAIL_KEY", null);
 
         UserName.setText(name);
         UserNum.setText(num);
+        UserEmail.setText(email);
+
+        editImg = findViewById(R.id.editProfile);
+        editImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(),ProfileEditActivity.class);
+                startActivity(profileIntent);
+            }
+        });
 
     }
 

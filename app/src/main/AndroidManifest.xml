@@ -37,16 +37,16 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".ScanBarcode" />
+        <activity android:name=".ScanBarcode"
+            android:label="Cart:)"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".Login.OtpActivity" />
         <activity android:name=".Login.LoginActivity" />
-        <activity
-            android:name=".Login.MainActivity"
+        <activity android:name=".Login.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -64,7 +64,8 @@
             android:name=".ProfileEditActivity"
             android:label="Edit Profile"
             android:parentActivityName=".UserActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+        </activity>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

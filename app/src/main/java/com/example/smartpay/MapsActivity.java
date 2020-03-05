@@ -48,25 +48,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         // Add some markers to the map, and add a data object to each marker.
 
-        m1 = mMap.addMarker(new MarkerOptions()
-                .position(CHANDKHEDAMART)
-                .title("CHANDKHEDA"));
-        m1.setTag(0);
-
         m2 = mMap.addMarker(new MarkerOptions()
                 .position(ISCONMART)
-                .title("ISCON"));
+                .title("ISCON MALL"));
         m2.setTag(0);
 
-        m3 = mMap.addMarker(new MarkerOptions()
-                .position(NIKOLMART)
-                .title("NIKOL"));
-        m3.setTag(0);
-
-        m4 = mMap.addMarker(new MarkerOptions()
-                .position(GOTAMART)
-                .title("GOTA"));
-        m4.setTag(0);
 
         // Set a listener for marker click.
         mMap.setOnMarkerClickListener(this);

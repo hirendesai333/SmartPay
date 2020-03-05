@@ -7,17 +7,12 @@
     android:orientation="vertical"
     tools:context=".IndoorActivity">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="7dp"
-        app:cardCornerRadius="7dp"
-        tools:ignore="UselessParent">
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.cardview.widget.CardView>
+    <ViewFlipper
+        android:id="@+id/myflipper"
+        android:padding="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center" >
+    </ViewFlipper>
 
 </LinearLayout>

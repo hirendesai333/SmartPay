@@ -14,6 +14,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.example.smartpay.Adapter.CustomListAdapter;
 import com.example.smartpay.Dto.AddListItem;
 import com.example.smartpay.Dto.ListItem;
+import com.example.smartpay.Login.MainActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -100,6 +103,30 @@ public class ScanBarcode extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_scan, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+
+        case R.id.storeMap:
+            Intent profileIntent = new Intent(getApplicationContext(), IndoorActivity.class);
+            startActivity(profileIntent);
+            return(true);
+
+        case R.id.exit:
+            finish();
+            break;
+        default:
+
+    }
+        return(super.onOptionsItemSelected(item));
     }
 
     private void pay(Double amount, String upiId, String name, String note) {

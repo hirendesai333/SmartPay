@@ -1,67 +1,55 @@
 package com.example.smartpay;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.os.Handler;
-
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.view.MotionEvent;
+import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
 public class IndoorActivity extends AppCompatActivity {
 
-    private static ViewPager mPager;
-    private static int currentPage = 0;
-    private static int NUM_PAGES = 0;
-    private ArrayList<com.mdaftabalam.imageslider.SlidingModel> imageModelArrayList;
-
-    private int[] myImageList = new int[]{R.drawable.mapone, R.drawable.maptwo, R.drawable.mapthree};
+    private ViewFlipper myViewFlipper;
+    private float initialXPoint;
+    int[] image = {
+            R.drawable.mapone,
+            R.drawable.maptwo,
+            R.drawable.mapthree,
+            R.drawable.mapfour };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indoor);
 
-        imageModelArrayList = new ArrayList<>();
-        imageModelArrayList = populateList();
-        init();
-    }
+        myViewFlipper = (ViewFlipper) findViewById(R.id.myflipper);
 
-    private ArrayList<com.mdaftabalam.imageslider.SlidingModel> populateList() {
-        ArrayList<com.mdaftabalam.imageslider.SlidingModel> list = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            com.mdaftabalam.imageslider.SlidingModel imageModel = new com.mdaftabalam.imageslider.SlidingModel();
-            imageModel.setImage_drawable(myImageList[i]);
-            list.add(imageModel);
+        for (int i = 0; i < image.length; i++) {
+            ImageView imageView = new ImageView(getApplicationContext());
+            imageView.setImageResource(image[i]);
+            myViewFlipper.addView(imageView);
         }
-        return list;
     }
 
-    private void init() {
-        mPager = findViewById(R.id.pager);
-        mPager.setAdapter(new com.mdaftabalam.imageslider.SlidingAdapter(IndoorActivity.this, imageModelArrayList));
-
-        NUM_PAGES = imageModelArrayList.size();
-
-        // Auto start of viewpager
-        final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == NUM_PAGES) {
-                    currentPage = 0;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                initialXPoint = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                float finalx = event.getX();
+                if (initialXPoint > finalx) {
+                    if (myViewFlipper.getDisplayedChild() == image.length)
+                        break;
+                    myViewFlipper.showNext();
+                } else {
+                    if (myViewFlipper.getDisplayedChild() == 0)
+                        break;
+                    myViewFlipper.showPrevious();
                 }
-                mPager.setCurrentItem(currentPage++, false);
-            }
-        };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 3000, 3000);
+                break;
+        }
+        return false;
     }
-
 }

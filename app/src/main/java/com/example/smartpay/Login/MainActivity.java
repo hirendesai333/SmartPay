@@ -10,6 +10,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -33,18 +34,23 @@ import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String CHANNEL_ID = "1";
     private FirebaseAuth mAuth;
     private FirebaseUser mCurrentUser;
     private Button mLogoutBtn;
     private Button scanBtn;
     private Button findStoreBtn;
-    private TextView userName;
+    private TextView userName,profileTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        profileTitle = findViewById(R.id.profile_title);
+        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
+        String name = sp.getString("NAME_KEY", null);
+
+        profileTitle.setText("Welcome "+name);
 
         userName = findViewById(R.id.profile_title);
         userName.setOnClickListener(new View.OnClickListener() {
@@ -94,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_success)
-                .setContentTitle("John's Android Studio Tutorials")
-                .setContentText("A video has just arrived!");
+                .setContentTitle("Currently there are no offers are available!");
+//                .setContentText("A video has just arrived!");
 
 
         // Creates the intent needed to show the notification

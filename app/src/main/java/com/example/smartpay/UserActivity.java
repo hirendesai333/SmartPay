@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,9 +12,8 @@ import java.util.Calendar;
 
 public class UserActivity extends AppCompatActivity {
 
-    TextView greetingText,UserName,UserNum,UserEmail;
-
-    ImageView editImg;
+    TextView greetingText,UserName,UserNum;
+    ImageView editImg,UserImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +24,14 @@ public class UserActivity extends AppCompatActivity {
 
         UserName = findViewById(R.id.userName);
         UserNum = findViewById(R.id.userNum);
-        UserEmail = findViewById(R.id.emailET);
+        UserImage = findViewById(R.id.userImage);
 
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         String name = sp.getString("NAME_KEY", null);
         String num = sp.getString("NUM_KEY", null);
-        String email = sp.getString("EMAIL_KEY", null);
 
         UserName.setText(name);
         UserNum.setText(num);
-        UserEmail.setText(email);
 
         editImg = findViewById(R.id.editProfile);
         editImg.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +41,6 @@ public class UserActivity extends AppCompatActivity {
                 startActivity(profileIntent);
             }
         });
-
     }
 
     private void showGreetings() {

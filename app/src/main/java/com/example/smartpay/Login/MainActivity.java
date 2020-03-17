@@ -1,6 +1,5 @@
 package com.example.smartpay.Login;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
@@ -30,6 +29,8 @@ import com.example.smartpay.UserActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Date;
+
 import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,28 +40,12 @@ public class MainActivity extends AppCompatActivity {
     private Button mLogoutBtn;
     private Button scanBtn;
     private Button findStoreBtn;
-    private TextView userName,profileTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        profileTitle = findViewById(R.id.profile_title);
-        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
-        String name = sp.getString("NAME_KEY", null);
-
-        profileTitle.setText("Welcome "+name);
-
-        userName = findViewById(R.id.profile_title);
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Starts the function below
-                addNotification();
-            }
-        });
-        
         mAuth = FirebaseAuth.getInstance();
         mCurrentUser = mAuth.getCurrentUser();
 
@@ -69,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
         mLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mAuth.signOut();
                 sendUserToLogin();
-
             }
         });
 
@@ -101,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_success)
                 .setContentTitle("Currently there are no offers are available!");
-//                .setContentText("A video has just arrived!");
-
+//                .setContentText("some context text");
 
         // Creates the intent needed to show the notification
         Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -132,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         case R.id.Offers:
             Toast.makeText(this, "Currently there are no offers Available!", Toast.LENGTH_SHORT).show();
+            addNotification();
             return (true);
             
         case R.id.exit:
@@ -160,4 +143,8 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

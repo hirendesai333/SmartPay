@@ -2,8 +2,10 @@ package com.example.smartpay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +37,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ScanBarcode extends AppCompatActivity {
 
@@ -46,16 +49,32 @@ public class ScanBarcode extends AppCompatActivity {
     Button scanAgainBtn;
     Button checkoutBtn;
 
-    TextView textViewAmount;
+    TextView textViewAmount,dateTime;;
 
     Double amount;
     String note, name, upiId;
     final int UPI_PAYMENT = 0;
 
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_item);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+
+
+        dateTime = findViewById(R.id.dtTextView);
+        String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
+        dateTime.setText(currentDateTimeString);
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("itemFruits");
@@ -106,27 +125,11 @@ public class ScanBarcode extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scan, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
-
-        case R.id.storeMap:
-            Intent profileIntent = new Intent(getApplicationContext(), IndoorActivity.class);
-            startActivity(profileIntent);
-            return(true);
-
-        case R.id.exit:
-            finish();
-            break;
-        default:
-
-    }
-        return(super.onOptionsItemSelected(item));
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void pay(Double amount, String upiId, String name, String note) {

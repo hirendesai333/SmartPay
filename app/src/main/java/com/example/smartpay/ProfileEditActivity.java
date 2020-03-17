@@ -5,13 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,17 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
 
 public class ProfileEditActivity extends AppCompatActivity {
 
-    EditText email,mobile;
+    EditText name,mobile;
     Button saveBtn;
     TextView changeImage;
-
-    private static final String TAG = ProfileEditActivity.class.getSimpleName();
 
     private int PICK_IMAGE_REQUEST = 1;
 
@@ -38,7 +31,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
 
-        email = findViewById(R.id.emailET);
+        name = findViewById(R.id.nameEt);
         mobile = findViewById(R.id.mobileEt);
         saveBtn = findViewById(R.id.saveBtn);
         changeImage = findViewById(R.id.changeImg);
@@ -67,17 +60,17 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     public void saveChanges(){
-        String emailNote = email.getText().toString();
+        String userNameNote = name.getText().toString();
         String numNote = mobile.getText().toString();
         ImageView imageNote = findViewById(R.id.imageView);
 
-        if (emailNote.isEmpty() || numNote.isEmpty()){
+        if (numNote.isEmpty()){
             Toast.makeText(ProfileEditActivity.this, "Fill the details!", Toast.LENGTH_SHORT).show();
         }else {
             Intent homeIntent = new Intent(getApplicationContext(), UserActivity.class);
             SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("EMAIL_KEY", emailNote);
+            editor.putString("NAME_KEY", userNameNote);
             editor.putString("NUM_KEY",numNote);
             editor.putString("IMG_KEY", String.valueOf(imageNote));
             editor.apply();
@@ -96,14 +89,18 @@ public class ProfileEditActivity extends AppCompatActivity {
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                // Log.d(TAG, String.valueOf(bitmap));
 
                 ImageView imageView = findViewById(R.id.imageView);
                 imageView.setImageBitmap(bitmap);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

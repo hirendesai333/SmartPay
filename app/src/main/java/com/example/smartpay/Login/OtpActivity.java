@@ -58,10 +58,8 @@ public class OtpActivity extends AppCompatActivity {
                     Toast.makeText(OtpActivity.this, "Please fill in the form and try again.", Toast.LENGTH_SHORT).show();
 
                 } else {
-
                     mOtpProgress.setVisibility(View.VISIBLE);
                     mVerifyBtn.setEnabled(false);
-
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mAuthVerificationId, otp);
                     signInWithPhoneAuthCredential(credential);
                 }
@@ -70,7 +68,6 @@ public class OtpActivity extends AppCompatActivity {
         });
     }
 
-
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(OtpActivity.this, new OnCompleteListener<AuthResult>() {
@@ -78,7 +75,6 @@ public class OtpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             sendUserToHome();
-                            // ...
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
@@ -91,7 +87,6 @@ public class OtpActivity extends AppCompatActivity {
                 });
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -101,7 +96,6 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     public void sendUserToHome() {
-
         Intent homeIntent = new Intent(OtpActivity.this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

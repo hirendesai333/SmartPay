@@ -21,14 +21,10 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme">
-        <activity android:name=".SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".IndoorActivity"
+            android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".IndoorActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -41,38 +37,47 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Login.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+        </activity>
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".ScanBarcode"
             android:label="Cart"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Login.OtpActivity" />
-        <activity android:name=".Login.LoginActivity" />
-        <activity
-            android:name=".Login.MainActivity"
-            android:theme="@style/AppTheme">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+        <activity android:name=".Login.OtpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Login.LoginActivity"
+            android:screenOrientation="portrait"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
         <activity
             android:name=".SearchActivity"
-            android:label="Search Item"
+            android:label="Store Map"
             android:parentActivityName=".Login.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".UserActivity"
             android:label="My Profile"
+            android:screenOrientation="portrait"
             android:parentActivityName=".Login.MainActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ProfileEditActivity"
             android:label="Edit Profile"
+            android:screenOrientation="portrait"
             android:parentActivityName=".UserActivity"
             android:theme="@style/AppTheme"></activity>
         <activity

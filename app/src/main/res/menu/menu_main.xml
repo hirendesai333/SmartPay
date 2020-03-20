@@ -4,17 +4,20 @@
 
     <item
         android:id="@+id/profile"
+        android:icon="@drawable/account"
         android:title="Profile"
         app:showAsAction="never">
     </item>
     <item
         android:id="@+id/Offers"
+        android:icon="@drawable/discount"
         android:title="Offers"
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/exit"
-        android:title="Exit"
+        android:id="@+id/logOut"
+        android:icon="@drawable/signout"
+        android:title="Logout"
         app:showAsAction="never">
     </item>
 

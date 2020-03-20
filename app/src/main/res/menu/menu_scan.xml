@@ -4,14 +4,10 @@
 
     <item
         android:id="@+id/storeMap"
+        android:icon="@drawable/store"
         android:title="Store map"
         app:showAsAction="never">
     </item>
 
-    <item
-        android:id="@+id/exit"
-        android:title="Exit"
-        app:showAsAction="never">
-    </item>
 
 </menu>

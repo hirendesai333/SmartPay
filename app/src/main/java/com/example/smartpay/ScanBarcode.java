@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.NotificationManager;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,7 @@ import com.example.smartpay.Adapter.CustomListAdapter;
 import com.example.smartpay.Dto.AddListItem;
 import com.example.smartpay.Dto.ListItem;
 import com.example.smartpay.Login.MainActivity;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,7 +42,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ScanBarcode extends AppCompatActivity {
+public class ScanBarcode extends AppCompatActivity{
 
     FirebaseDatabase database;
     DatabaseReference ref;
@@ -55,22 +58,10 @@ public class ScanBarcode extends AppCompatActivity {
     String note, name, upiId;
     final int UPI_PAYMENT = 0;
 
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_item);
-
-        drawerLayout = findViewById(R.id.drawerLayout);
-        toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
-
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
 
         dateTime = findViewById(R.id.dtTextView);
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
@@ -122,14 +113,6 @@ public class ScanBarcode extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void pay(Double amount, String upiId, String name, String note) {
@@ -341,6 +324,29 @@ public class ScanBarcode extends AppCompatActivity {
                     upiPaymentDataOperation(dataList);
                 }
                 break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_scan, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.storeMap:
+                Intent searchIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(searchIntent);
+                return true;
+            case R.id.exit:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

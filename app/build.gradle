@@ -71,6 +71,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     implementation 'com.czerwii:SlidingdrawerMenu:1.0.1'
+    implementation 'com.github.Shashank02051997:FancyAlertDialog-Android:0.1'
 
 
 }

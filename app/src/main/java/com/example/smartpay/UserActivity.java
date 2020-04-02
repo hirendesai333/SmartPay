@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Calendar;
 
 public class UserActivity extends AppCompatActivity {
@@ -41,6 +45,7 @@ public class UserActivity extends AppCompatActivity {
                 startActivity(profileIntent);
             }
         });
+
     }
 
     private void showGreetings() {

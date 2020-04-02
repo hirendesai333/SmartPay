@@ -2,14 +2,8 @@ package com.example.smartpay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -29,8 +23,7 @@ import android.widget.Toast;
 import com.example.smartpay.Adapter.CustomListAdapter;
 import com.example.smartpay.Dto.AddListItem;
 import com.example.smartpay.Dto.ListItem;
-import com.example.smartpay.Login.MainActivity;
-import com.google.android.material.navigation.NavigationView;
+import com.example.smartpay.Dto.itemInformation;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,7 +38,11 @@ import java.util.Date;
 public class ScanBarcode extends AppCompatActivity{
 
     FirebaseDatabase database;
+    FirebaseDatabase itemDatabase;
+
     DatabaseReference ref;
+    DatabaseReference itemRef;
+
     ArrayList<ListItem> list = new ArrayList<>();
     ArrayList<AddListItem> results = new ArrayList<>();
 
@@ -57,7 +54,7 @@ public class ScanBarcode extends AppCompatActivity{
     Double amount;
     String note, name, upiId;
     final int UPI_PAYMENT = 0;
-
+    double total = 0.0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +66,9 @@ public class ScanBarcode extends AppCompatActivity{
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("itemFruits");
+
+        itemDatabase = FirebaseDatabase.getInstance();
+        itemRef = database.getReference("productData");
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
@@ -167,10 +167,20 @@ public class ScanBarcode extends AppCompatActivity{
                 //Code to handle successful transaction here.
                 Toast.makeText(ScanBarcode.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
                 Log.d("UPI", "responseStr: " + approvalRefNo);
+
+                if (list.size()>0){
+                    for (int i = 0; i<list.size();i++){
+                        String itemName = list.get(i).getName();
+                        String itemPrice = list.get(i).getPrice();
+                        String itemWeight = list.get(i).getWeight();
+                        String itemQt = list.get(i).getName();
+                        String itemImage = list.get(i).getImage();
+                        saveInformation(itemName,itemPrice,itemWeight,itemQt,itemImage,approvalRefNo);
+                    }
+                }
+
             } else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(ScanBarcode.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
-
-
 
             } else {
                 Toast.makeText(ScanBarcode.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
@@ -178,6 +188,13 @@ public class ScanBarcode extends AppCompatActivity{
         } else {
             Toast.makeText(ScanBarcode.this, "Internet connection is not available. Please check and try again", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveInformation(String itemName, String itemImage, String itemPrice, String itemQt, String itemWeight, String approvalRefNo) {
+        String id = itemRef.push().getKey();
+        String finalAmount = approvalRefNo;
+        itemInformation itemInformation = new itemInformation(id,itemName,itemPrice,itemWeight,itemQt,total,itemImage);
+        itemRef.child(finalAmount).setValue(itemInformation);
     }
 
     public static boolean isConnectionAvailable(Context context) {
@@ -193,7 +210,6 @@ public class ScanBarcode extends AppCompatActivity{
         return false;
     }
 
-
     // Get the results:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -205,7 +221,7 @@ public class ScanBarcode extends AppCompatActivity{
             } else {
                 String strScanFruitName = result.getContents();
                 if (list.size() > 0) {
-                    double total = 0.0;
+//                    double total = 0.0;
 
                     for (int i = 0; i < list.size(); i++) {
 
@@ -291,9 +307,6 @@ public class ScanBarcode extends AppCompatActivity{
                                 name = "hp";
                                 note = "Go ahead & make your day!";
                                 pay(amount, upiId, name, note);
-
-                                Log.d("MainActivity","payment");
-
                             }
                         });
                     }
@@ -349,6 +362,7 @@ public class ScanBarcode extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     @Override
     public void onBackPressed() {

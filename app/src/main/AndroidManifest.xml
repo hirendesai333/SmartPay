@@ -21,10 +21,13 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme">
-
-        <activity android:name=".IndoorActivity"
-            android:screenOrientation="landscape">
-        </activity>
+        <activity android:name=".TransactionActivity"
+            android:label="Transactions"
+            android:parentActivityName=".Login.MainActivity"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".IndoorActivity"
+            android:screenOrientation="landscape" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,7 +40,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,8 +52,7 @@
         <activity
             android:name=".Login.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
@@ -58,11 +61,12 @@
             android:label="Cart"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Login.OtpActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Login.LoginActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".Login.OtpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Login.LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SearchActivity"
             android:label="Store Map"
@@ -71,15 +75,15 @@
         <activity
             android:name=".UserActivity"
             android:label="My Profile"
-            android:screenOrientation="portrait"
             android:parentActivityName=".Login.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ProfileEditActivity"
             android:label="Edit Profile"
-            android:screenOrientation="portrait"
             android:parentActivityName=".UserActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

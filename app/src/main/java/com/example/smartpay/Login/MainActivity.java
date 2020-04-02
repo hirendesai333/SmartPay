@@ -2,37 +2,26 @@ package com.example.smartpay.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smartpay.MapsActivity;
 import com.example.smartpay.ScanBarcode;
 import com.example.smartpay.R;
-import com.example.smartpay.SearchActivity;
+import com.example.smartpay.TransactionActivity;
 import com.example.smartpay.UserActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,10 +30,6 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
-
-import java.util.Date;
-
-import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.Offers:
                         showOfferDialog();
+                        break;
+                    case R.id.transaction:
+                        Intent transactionIntent = new Intent(getApplicationContext(), TransactionActivity.class);
+                        startActivity(transactionIntent);
                         break;
                     case R.id.logOut:
                         LogOut();
@@ -152,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveBtnBackground(Color.parseColor("#49BEFF"))  //Don't pass R.color.colorvalue
                 .setPositiveBtnText("OK")
                 .setNegativeBtnBackground(Color.parseColor("#FFA9A7A8"))  //Don't pass R.color.colorvalue
-                .setAnimation(Animation.POP)
+                .setAnimation(Animation.SLIDE)
                 .isCancellable(true)
                 .setIcon(R.drawable.dics,Icon.Visible)
                 .OnPositiveClicked(new FancyAlertDialogListener() {

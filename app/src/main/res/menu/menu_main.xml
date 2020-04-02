@@ -15,6 +15,12 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/transaction"
+        android:icon="@drawable/transaction"
+        android:title="Transactions"
+        app:showAsAction="never">
+    </item>
+    <item
         android:id="@+id/logOut"
         android:icon="@drawable/signout"
         android:title="Logout"

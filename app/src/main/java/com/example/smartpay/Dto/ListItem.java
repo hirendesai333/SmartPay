@@ -8,6 +8,10 @@ public class ListItem {
     private String image;
     private String qty;
 
+  /*  public ListItem(String itemPrice){
+        this.price = itemPrice;
+    }*/
+
     public void setQty(String qty) {
         this.qty = qty;
     }

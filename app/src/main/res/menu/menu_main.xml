@@ -21,6 +21,13 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/feedback"
+        android:icon="@drawable/feedback"
+        android:title="Feedback!"
+        app:showAsAction="never">
+    </item>
+
+    <item
         android:id="@+id/logOut"
         android:icon="@drawable/signout"
         android:title="Logout"

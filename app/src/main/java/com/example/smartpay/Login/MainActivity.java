@@ -7,12 +7,19 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -74,6 +81,23 @@ public class MainActivity extends AppCompatActivity {
                         Intent transactionIntent = new Intent(getApplicationContext(), TransactionActivity.class);
                         startActivity(transactionIntent);
                         break;
+                    case R.id.feedback:
+                        /*Intent Email = new Intent(Intent.ACTION_SEND);
+                        Email.setType("text/email");
+                        Email.putExtra(Intent.EXTRA_EMAIL, new String[] { "parthkabariya789@gmail.com" });
+                        Email.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+                        Email.putExtra(Intent.EXTRA_TEXT, "Dear ...," + "");
+                        startActivity(Intent.createChooser(Email, "Send Feedback:"));*/
+
+                        Intent intent = new Intent (Intent.ACTION_SEND);
+                        intent.setType("message/rfc822");
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"parthkabariya789@gmail.com"});
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback from User");
+                        intent.setPackage("com.google.android.gm");
+                        intent.resolveActivity(getPackageManager());
+                        startActivity(intent);
+
+                        return true;
                     case R.id.logOut:
                         LogOut();
                         break;
@@ -192,4 +216,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -12,12 +12,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.smartpay.Dto.UserInformation;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 
 public class UserActivity extends AppCompatActivity {
 
-    TextView greetingText,UserName,UserNum;
+    TextView greetingText,UserName,UserNum,UserEmail;
     ImageView editImg,UserImage;
+
+    /*FirebaseAuth firebaseAuth;
+    FirebaseDatabase userDatabase;
+    DatabaseReference userRef;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +38,17 @@ public class UserActivity extends AppCompatActivity {
 
         UserName = findViewById(R.id.userName);
         UserNum = findViewById(R.id.userNum);
+        UserEmail = findViewById(R.id.userEmail);
         UserImage = findViewById(R.id.userImage);
 
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         String name = sp.getString("NAME_KEY", null);
         String num = sp.getString("NUM_KEY", null);
+        String email = sp.getString("EMAIL_KEY",null);
 
         UserName.setText(name);
         UserNum.setText(num);
+        UserEmail.setText(email);
 
         editImg = findViewById(R.id.editProfile);
         editImg.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +59,21 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        /*firebaseAuth = FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference("Users");
+
+        saveInformation();*/
+
     }
+
+    /*private void saveInformation() {
+        String name = UserName.getText().toString();
+        String number = UserNum.getText().toString();
+        String email = UserEmail.getText().toString();
+
+        UserInformation userInformation = new UserInformation(name,number,email);
+        userRef.child(name).setValue(userInformation);
+    }*/
 
     private void showGreetings() {
         greetingText = findViewById(R.id.greetingText);

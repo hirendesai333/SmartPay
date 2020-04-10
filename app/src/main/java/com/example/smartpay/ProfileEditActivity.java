@@ -20,7 +20,7 @@ import java.io.IOException;
 
 public class ProfileEditActivity extends AppCompatActivity {
 
-    EditText name,mobile;
+    EditText name,email;
     Button saveBtn;
     TextView changeImage;
 
@@ -32,7 +32,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_edit);
 
         name = findViewById(R.id.nameEt);
-        mobile = findViewById(R.id.mobileEt);
+        email = findViewById(R.id.emailEt);
+
         saveBtn = findViewById(R.id.saveBtn);
         changeImage = findViewById(R.id.changeImg);
 
@@ -61,18 +62,17 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     public void saveChanges(){
         String userNameNote = name.getText().toString();
-        String numNote = mobile.getText().toString();
+        String userEmailNote = email.getText().toString();
         ImageView imageNote = findViewById(R.id.imageView);
 
-        if (numNote.isEmpty()){
+        if (userEmailNote.isEmpty()){
             Toast.makeText(ProfileEditActivity.this, "Fill the details!", Toast.LENGTH_SHORT).show();
         }else {
             Intent homeIntent = new Intent(getApplicationContext(), UserActivity.class);
             SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString("NAME_KEY", userNameNote);
-            editor.putString("NUM_KEY",numNote);
-            editor.putString("IMG_KEY", String.valueOf(imageNote));
+            editor.putString("EMAIL_KEY",userEmailNote);
             editor.apply();
             startActivity(homeIntent);
             finish();

@@ -3,9 +3,17 @@ package com.example.smartpay;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -23,7 +31,9 @@ import android.widget.Toast;
 import com.example.smartpay.Adapter.CustomListAdapter;
 import com.example.smartpay.Dto.AddListItem;
 import com.example.smartpay.Dto.ListItem;
+import com.example.smartpay.Dto.OrderedListItem;
 import com.example.smartpay.Dto.itemInformation;
+import com.example.smartpay.Login.MainActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +44,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScanBarcode extends AppCompatActivity{
 
@@ -41,10 +53,12 @@ public class ScanBarcode extends AppCompatActivity{
     FirebaseDatabase itemDatabase;
 
     DatabaseReference ref;
+    DatabaseReference demoref;
     DatabaseReference itemRef;
 
     ArrayList<ListItem> list = new ArrayList<>();
     ArrayList<AddListItem> results = new ArrayList<>();
+//    ArrayList<OrderedListItem> test= new ArrayList<>();
 
     Button scanAgainBtn;
     Button checkoutBtn;
@@ -55,6 +69,7 @@ public class ScanBarcode extends AppCompatActivity{
     String note, name, upiId;
     final int UPI_PAYMENT = 0;
     double total = 0.0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,15 +81,62 @@ public class ScanBarcode extends AppCompatActivity{
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("itemFruits");
+        demoref = database.getReference("orderedData");
 
         itemDatabase = FirebaseDatabase.getInstance();
-        itemRef = database.getReference("productData");
+        itemRef = database.getReference().child("orderedData").push();
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 ListItem value = dataSnapshot.getValue(ListItem.class);
                 list.add(value);
+
+                Log.d("Fruit Size ---> ", String.valueOf(list.size()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        demoref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d("Item Name 2--->", String.valueOf(dataSnapshot.getChildrenCount()));
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    String strItemName = dataSnapshot1.child("ItemName").getValue(String.class);
+//                    Log.d("Item Name 1--->", strItemName);
+
+                }
+
+//                String strItemImage = dataSnapshot.child("ItemImage").getValue().toString();
+//                String strItemName = dataSnapshot.child("ItemName").getValue().toString();
+//                String strPaymentNo = dataSnapshot.child("PaymentReNo").getValue().toString();
+//                String strItemPrice = dataSnapshot.child("Price").getValue().toString();
+//                String Qty = dataSnapshot.child("Qty").getValue().toString();
+//                String strTotal= dataSnapshot.child("TotalPrice").getValue().toString();
+//                String strItemweight = dataSnapshot.child("Weight").getValue().toString();
+//                OrderedListItem value = new OrderedListItem(strItemImage,strItemName,strPaymentNo,
+//                        strItemPrice,Qty,strTotal,strItemweight);
+//                test.add(value);
+//                Log.d("Size ---> ", String.valueOf(test.size()));
             }
 
             @Override
@@ -141,6 +203,7 @@ public class ScanBarcode extends AppCompatActivity{
     }
 
     private void upiPaymentDataOperation(ArrayList<String> data) {
+
         if (isConnectionAvailable(ScanBarcode.this)) {
             String str = data.get(0);
             Log.d("UPIPAY", "upiPaymentDataOperation: " + str);
@@ -159,7 +222,6 @@ public class ScanBarcode extends AppCompatActivity{
                     }
                 } else {
                     paymentCancel = "Payment cancelled by user.";
-
                 }
             }
 
@@ -167,20 +229,42 @@ public class ScanBarcode extends AppCompatActivity{
                 //Code to handle successful transaction here.
                 Toast.makeText(ScanBarcode.this, "Transaction successful.", Toast.LENGTH_SHORT).show();
                 Log.d("UPI", "responseStr: " + approvalRefNo);
+                saveInformation(approvalRefNo);
 
-                if (list.size()>0){
+                Intent notifyIntent = new Intent(this,TransactionActivity.class);
+                successNotification(this,"Transaction successful","see you order history",notifyIntent);
+
+
+            /*    if (list.size()>0){
                     for (int i = 0; i<list.size();i++){
                         String itemName = list.get(i).getName();
                         String itemPrice = list.get(i).getPrice();
                         String itemWeight = list.get(i).getWeight();
                         String itemQt = list.get(i).getName();
-                        String itemImage = list.get(i).getImage();
-                        saveInformation(itemName,itemPrice,itemWeight,itemQt,itemImage,approvalRefNo);
+//                        String itemImage = list.get(i).getImage();
+                        saveInformation(itemName,itemPrice,itemWeight,itemQt,approvalRefNo);
                     }
-                }
+                }*/
 
             } else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(ScanBarcode.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
+
+                Intent notifyIntent = new Intent(this,MainActivity.class);
+                cancelNotification(this,"Payment cancelled by user!","",notifyIntent);
+
+                //                saveInformation();
+
+
+//                if (list.size()>0){
+//                    for (int i = 0; i<list.size();i++){
+//                        String itemName = list.get(i).getName();
+//                        String itemPrice = list.get(i).getPrice();
+//                        String itemWeight = list.get(i).getWeight();
+//                        String itemQt = list.get(i).getName();
+//                        String itemImage = list.get(i).getImage();
+//                        saveInformation(itemName,itemPrice,itemWeight,itemQt,itemImage);
+//                    }
+//                }
 
             } else {
                 Toast.makeText(ScanBarcode.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
@@ -190,12 +274,65 @@ public class ScanBarcode extends AppCompatActivity{
         }
     }
 
-    private void saveInformation(String itemName, String itemImage, String itemPrice, String itemQt, String itemWeight, String approvalRefNo) {
+    private void saveInformation(String paymentRefNo) {
+
+        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
+        String num = sp.getString("NUM_KEY", null);
+
         String id = itemRef.push().getKey();
-        String finalAmount = approvalRefNo;
-        itemInformation itemInformation = new itemInformation(id,itemName,itemPrice,itemWeight,itemQt,total,itemImage);
-        itemRef.child(finalAmount).setValue(itemInformation);
+//
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("Item Name", itemName);
+//        map.put("Price", itemPrice);
+//        map.put("Weight", itemWeight);
+//        map.put("Qty", itemQt);
+//        map.put("Total Price", total);
+//        map.put("Item Image", itemImage);
+//        map.put("Payment Ref No", "123456");
+//        itemRef.updateChildren(map);
+//
+//        Log.d("Start --->", "1");
+        Map<String, Object> productMap = new HashMap<>();
+
+        if (results.size()>0){
+                    for (int i = 0; i<results.size();i++){
+                        String itemName = results.get(i).getName();
+                        String itemPrice = results.get(i).getPrice();
+                        String itemWeight = results.get(i).getWeight();
+                        String itemQt = results.get(i).getQty();
+                        String itemImage = results.get(i).getImage();
+
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("ItemName", itemName);
+                        map.put("Price", itemPrice);
+                        map.put("Weight", itemWeight);
+                        map.put("Qty", itemQt);
+                        map.put("TotalPrice", total);
+                        map.put("ItemImage", itemImage);
+                        map.put("PaymentRefNo", paymentRefNo);
+
+                        productMap.put(String.valueOf(i),map);
+                        itemRef.child(num).setValue(productMap);
+//                        itemInformation itemInformation = new itemInformation(itemName, itemPrice, itemWeight, itemQt, total,itemImage,"1234");
+//                        itemRef.setValue(itemInformation);
+                        Log.d("Key --->", id);
+                        Log.d("start --->", i + "");
+                    }
+        }
+
+//        itemInformation itemInformation = new itemInformation(itemName, itemPrice, itemWeight, itemQt, total);
+//        itemRef.setValue(itemInformation);l̥
+//        itemRef.child(id).setValue(itemInformation);
     }
+
+
+
+//    private void saveInformation(String itemName, String itemPrice, String itemQt, String itemWeight) {
+//        String id = itemRef.push().getKey();
+//
+//        itemInformation itemInformation = new itemInformation(itemName,itemPrice,itemWeight,itemQt,total);
+//        itemRef.child(id).setValue(itemInformation);
+//    }
 
     public static boolean isConnectionAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -291,8 +428,10 @@ public class ScanBarcode extends AppCompatActivity{
                     }
 
                     if (results.size() > 0) {
+                        total = 0.0;
                         for (int i = 0; i < results.size(); i++) {
                             double t = Double.parseDouble(results.get(i).getPrice()) * Double.parseDouble(results.get(i).getQty());
+//                            double t = Double.parseDouble(results.get(i).getPrice());
                             total = total + t;
                         }
 
@@ -363,10 +502,73 @@ public class ScanBarcode extends AppCompatActivity{
         }
     }
 
-
     @Override
     public void onBackPressed() {
         super.finish();
+    }
+
+    public void successNotification(Context context, String title, String body, Intent intent) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        int notificationId = 1;
+        String channelId = "channel-01";
+        String channelName = "Channel Name";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_success)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setAutoCancel(true);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(notificationId, mBuilder.build());
+    }
+
+    public void cancelNotification(Context context, String title, String body, Intent intent) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        int notificationId = 1;
+        String channelId = "channel-01";
+        String channelName = "Channel Name";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_failed)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setAutoCancel(true);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(notificationId, mBuilder.build());
     }
 
 }

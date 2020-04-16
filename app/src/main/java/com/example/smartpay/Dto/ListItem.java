@@ -2,14 +2,14 @@ package com.example.smartpay.Dto;
 
 public class ListItem {
 
-    private String name;
-    private String price;
-    private String weight;
+    private String ItemName;
+    private String Price;
+    private String Weight;
     private String image;
     private String qty;
 
   /*  public ListItem(String itemPrice){
-        this.price = itemPrice;
+        this.Price = itemPrice;
     }*/
 
     public void setQty(String qty) {
@@ -21,31 +21,31 @@ public class ListItem {
     }
 
     public String getName() {
-        return name;
+        return ItemName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String ItemName) {
+        this.ItemName = ItemName;
     }
 
     public String getPrice() {
-        return price;
+        return Price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setPrice(String Price) {
+        this.Price = Price;
     }
 
     public String getWeight() {
-        return weight;
+        return Weight;
     }
 
-    public void setWeight(String weight) {
-        this.weight = weight;
+    public void setWeight(String Weight) {
+        this.Weight = Weight;
     }
 
     public String toString(){
-        return name+" "+price+" "+weight;
+        return ItemName+" "+Price+" "+Weight;
     }
 
     public String getImage() {
@@ -55,4 +55,5 @@ public class ListItem {
     public void setImage(String image) {
         this.image = image;
     }
+
 }

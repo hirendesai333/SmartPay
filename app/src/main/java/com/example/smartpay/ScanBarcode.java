@@ -39,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -53,7 +54,7 @@ public class ScanBarcode extends AppCompatActivity{
     FirebaseDatabase itemDatabase;
 
     DatabaseReference ref;
-    DatabaseReference demoref;
+//    DatabaseReference demoref;
     DatabaseReference itemRef;
 
     ArrayList<ListItem> list = new ArrayList<>();
@@ -63,7 +64,7 @@ public class ScanBarcode extends AppCompatActivity{
     Button scanAgainBtn;
     Button checkoutBtn;
 
-    TextView textViewAmount,dateTime;;
+    TextView textViewAmount,dateTime;
 
     Double amount;
     String note, name, upiId;
@@ -81,10 +82,10 @@ public class ScanBarcode extends AppCompatActivity{
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("itemFruits");
-        demoref = database.getReference("orderedData");
+//        demoref = database.getReference("orderedData");
 
         itemDatabase = FirebaseDatabase.getInstance();
-        itemRef = database.getReference().child("orderedData").push();
+        itemRef = database.getReference("orderedData");
 
         ref.addChildEventListener(new ChildEventListener() {
             @Override
@@ -115,50 +116,50 @@ public class ScanBarcode extends AppCompatActivity{
 
             }
         });
-        demoref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d("Item Name 2--->", String.valueOf(dataSnapshot.getChildrenCount()));
-
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    String strItemName = dataSnapshot1.child("ItemName").getValue(String.class);
-//                    Log.d("Item Name 1--->", strItemName);
-
-                }
-
-//                String strItemImage = dataSnapshot.child("ItemImage").getValue().toString();
-//                String strItemName = dataSnapshot.child("ItemName").getValue().toString();
-//                String strPaymentNo = dataSnapshot.child("PaymentReNo").getValue().toString();
-//                String strItemPrice = dataSnapshot.child("Price").getValue().toString();
-//                String Qty = dataSnapshot.child("Qty").getValue().toString();
-//                String strTotal= dataSnapshot.child("TotalPrice").getValue().toString();
-//                String strItemweight = dataSnapshot.child("Weight").getValue().toString();
-//                OrderedListItem value = new OrderedListItem(strItemImage,strItemName,strPaymentNo,
-//                        strItemPrice,Qty,strTotal,strItemweight);
-//                test.add(value);
-//                Log.d("Size ---> ", String.valueOf(test.size()));
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        demoref.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                Log.d("Item Name 2--->", String.valueOf(dataSnapshot.getChildrenCount()));
+//
+//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                    String strItemName = dataSnapshot1.child("ItemName").getValue(String.class);
+////                    Log.d("Item Name 1--->", strItemName);
+//
+//                }
+//
+////                String strItemImage = dataSnapshot.child("ItemImage").getValue().toString();
+////                String strItemName = dataSnapshot.child("ItemName").getValue().toString();
+////                String strPaymentNo = dataSnapshot.child("PaymentReNo").getValue().toString();
+////                String strItemPrice = dataSnapshot.child("Price").getValue().toString();
+////                String Qty = dataSnapshot.child("Qty").getValue().toString();
+////                String strTotal= dataSnapshot.child("TotalPrice").getValue().toString();
+////                String strItemweight = dataSnapshot.child("Weight").getValue().toString();
+////                OrderedListItem value = new OrderedListItem(strItemImage,strItemName,strPaymentNo,
+////                        strItemPrice,Qty,strTotal,strItemweight);
+////                test.add(value);
+////                Log.d("Size ---> ", String.valueOf(test.size()));
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         new IntentIntegrator(this)
                 .setOrientationLocked(false)
@@ -232,7 +233,7 @@ public class ScanBarcode extends AppCompatActivity{
                 saveInformation(approvalRefNo);
 
                 Intent notifyIntent = new Intent(this,TransactionActivity.class);
-                successNotification(this,"Transaction successful","see you order history",notifyIntent);
+                successNotification(this,"Transaction successful","Tap to see your order history",notifyIntent);
 
 
             /*    if (list.size()>0){
@@ -279,19 +280,8 @@ public class ScanBarcode extends AppCompatActivity{
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         String num = sp.getString("NUM_KEY", null);
 
-        String id = itemRef.push().getKey();
-//
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("Item Name", itemName);
-//        map.put("Price", itemPrice);
-//        map.put("Weight", itemWeight);
-//        map.put("Qty", itemQt);
-//        map.put("Total Price", total);
-//        map.put("Item Image", itemImage);
-//        map.put("Payment Ref No", "123456");
-//        itemRef.updateChildren(map);
-//
-//        Log.d("Start --->", "1");
+//        String id = itemRef.push().getKey();
+
         Map<String, Object> productMap = new HashMap<>();
 
         if (results.size()>0){
@@ -312,27 +302,14 @@ public class ScanBarcode extends AppCompatActivity{
                         map.put("PaymentRefNo", paymentRefNo);
 
                         productMap.put(String.valueOf(i),map);
-                        itemRef.child(num).setValue(productMap);
-//                        itemInformation itemInformation = new itemInformation(itemName, itemPrice, itemWeight, itemQt, total,itemImage,"1234");
-//                        itemRef.setValue(itemInformation);
-                        Log.d("Key --->", id);
-                        Log.d("start --->", i + "");
+                        itemRef.child(num).child(paymentRefNo).updateChildren(productMap);
+//
+//                        Log.d("Key --->", id);
+//                        Log.d("start --->", i + "");
                     }
         }
 
-//        itemInformation itemInformation = new itemInformation(itemName, itemPrice, itemWeight, itemQt, total);
-//        itemRef.setValue(itemInformation);l̥
-//        itemRef.child(id).setValue(itemInformation);
     }
-
-
-
-//    private void saveInformation(String itemName, String itemPrice, String itemQt, String itemWeight) {
-//        String id = itemRef.push().getKey();
-//
-//        itemInformation itemInformation = new itemInformation(itemName,itemPrice,itemWeight,itemQt,total);
-//        itemRef.child(id).setValue(itemInformation);
-//    }
 
     public static boolean isConnectionAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -442,7 +419,7 @@ public class ScanBarcode extends AppCompatActivity{
                             @Override
                             public void onClick(View view) {
                                 amount = finalTotal;
-                                upiId = "9408453375@upi";
+                                upiId = "9825348970@ybl";
                                 name = "hp";
                                 note = "Go ahead & make your day!";
                                 pay(amount, upiId, name, note);

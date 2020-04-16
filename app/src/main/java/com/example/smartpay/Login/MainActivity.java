@@ -82,13 +82,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(transactionIntent);
                         break;
                     case R.id.feedback:
-                        /*Intent Email = new Intent(Intent.ACTION_SEND);
-                        Email.setType("text/email");
-                        Email.putExtra(Intent.EXTRA_EMAIL, new String[] { "parthkabariya789@gmail.com" });
-                        Email.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
-                        Email.putExtra(Intent.EXTRA_TEXT, "Dear ...," + "");
-                        startActivity(Intent.createChooser(Email, "Send Feedback:"));*/
-
                         Intent intent = new Intent (Intent.ACTION_SEND);
                         intent.setType("message/rfc822");
                         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"parthkabariya789@gmail.com"});

@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                         intent.setPackage("com.google.android.gm");
                         intent.resolveActivity(getPackageManager());
                         startActivity(intent);
-
                         return true;
                     case R.id.logOut:
                         LogOut();

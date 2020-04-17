@@ -302,7 +302,7 @@ public class ScanBarcode extends AppCompatActivity{
                         map.put("PaymentRefNo", paymentRefNo);
 
                         productMap.put(String.valueOf(i),map);
-                        itemRef.child(num).child(paymentRefNo).updateChildren(productMap);
+                        itemRef.child(num).updateChildren(productMap);
 //
 //                        Log.d("Key --->", id);
 //                        Log.d("start --->", i + "");

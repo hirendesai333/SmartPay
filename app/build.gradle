@@ -80,11 +80,6 @@ dependencies {
     implementation 'com.czerwii:SlidingdrawerMenu:1.0.1'
     implementation 'com.github.Shashank02051997:FancyAlertDialog-Android:0.1'
 
-    // FirebaseUI for Firebase Realtime Database
-//    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
-
     implementation 'com.firebase:firebase-client-android:2.4.0'
-
-
 
 }

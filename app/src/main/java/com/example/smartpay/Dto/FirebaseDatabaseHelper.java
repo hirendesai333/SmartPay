@@ -1,4 +1,4 @@
-package com.example.smartpay;
+package com.example.smartpay.Dto;
 
 import androidx.annotation.NonNull;
 
@@ -39,7 +39,6 @@ public class FirebaseDatabaseHelper {
                     products.add(product);
                 }
                 dataStatus.DataIsLoaded(products,keys);
-
 
             }
 

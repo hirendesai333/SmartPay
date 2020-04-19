@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -19,7 +20,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +37,7 @@ import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
 import com.shashank.sony.fancydialoglib.Icon;
+import com.shurajcodx.appratingdialog.AppRatingDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -148,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showOfferDialog(){
-
         new FancyAlertDialog.Builder(this)
                 .setTitle("Currently there is no offer available!")
                 .setBackgroundColor(Color.parseColor("#055882"))  //Don't pass R.color.colorvalue
@@ -163,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
-
                     }
                 })
                 .OnNegativeClicked(new FancyAlertDialogListener() {
@@ -173,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .build();
+
 
     }
 

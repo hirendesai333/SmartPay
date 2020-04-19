@@ -47,13 +47,13 @@
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="49dp" />
 
-   <!-- <TextView
+    <TextView
         android:id="@+id/tv_paymentRefNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
         tools:layout_editor_absoluteX="108dp"
-        tools:layout_editor_absoluteY="54dp" />-->
+        tools:layout_editor_absoluteY="54dp" />
 
     <TextView
         android:id="@+id/tv_totalPrice"

@@ -1,4 +1,4 @@
-package com.example.smartpay;
+package com.example.smartpay.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartpay.Dto.Product;
+import com.example.smartpay.R;
+
 import java.util.List;
 
 public class RecyclerView_Config {
     private Context context;
     private ProductsAdapter productsAdapter;
 
-    public void setConfig(RecyclerView recyclerView, Context mcContext,List<Product> products, List<String> keys){
+
+    public void setConfig(RecyclerView recyclerView, Context mcContext, List<Product> products, List<String> keys){
         context = mcContext;
         productsAdapter = new ProductsAdapter(products,keys);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -43,7 +47,7 @@ public class RecyclerView_Config {
             Qty = (TextView) itemView.findViewById(R.id.tv_itemQty);
             TotalPrice = (TextView) itemView.findViewById(R.id.tv_totalPrice);
             ItemImage = (TextView) itemView.findViewById(R.id.tv_itemImage);
-//            PaymentRefNo = (TextView) itemView.findViewById(R.id.tv_paymentRefNo);
+            PaymentRefNo = (TextView) itemView.findViewById(R.id.tv_paymentRefNo);
 
         }
 
@@ -54,7 +58,7 @@ public class RecyclerView_Config {
             Qty.setText(product.getQty());
             TotalPrice.setText(product.getTotalPrice());
             ItemImage.setText(product.getItemImage());
-//            PaymentRefNo.setText(product.getPaymentRefNo());
+            PaymentRefNo.setText(product.getPaymentRefNo());
 
             this.key = key;
         }

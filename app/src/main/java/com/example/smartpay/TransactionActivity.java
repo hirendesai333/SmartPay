@@ -1,18 +1,15 @@
 package com.example.smartpay;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.example.smartpay.Adapter.RecyclerView_Config;
+import com.example.smartpay.Dto.FirebaseDatabaseHelper;
+import com.example.smartpay.Dto.Product;
 
-import java.util.Date;
 import java.util.List;
 
 public class TransactionActivity extends AppCompatActivity {
@@ -25,7 +22,7 @@ public class TransactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
-        dateTime = findViewById(R.id.tvDateTime);
+        /*dateTime = findViewById(R.id.tvDateTime);
         String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
         dateTime.setText(currentDateTimeString);
 
@@ -39,7 +36,7 @@ public class TransactionActivity extends AppCompatActivity {
                 bottomSheetDialog.setContentView(view);
                 bottomSheetDialog.show();
             }
-        });
+        });*/
 
         recyclerView = findViewById(R.id.recyclerview_products);
         new FirebaseDatabaseHelper().ReadProducts(new FirebaseDatabaseHelper.DataStatus() {

@@ -1,4 +1,4 @@
-package com.example.smartpay;
+package com.example.smartpay.Dto;
 
 public class Product {
     private String ItemName;
@@ -7,19 +7,19 @@ public class Product {
     private String Qty;
     private String TotalPrice;
     private String ItemImage;
-//    private Double PaymentRefNo;
+    private String PaymentRefNo;
 
     public Product() {
     }
 
-    public Product(String itemName, String price, String weight, String qty, String totalPrice, String itemImage, Double paymentRefNo) {
+    public Product(String itemName, String price, String weight, String qty, String totalPrice, String itemImage, String paymentRefNo) {
         ItemName = itemName;
         Price = price;
         Weight = weight;
         Qty = qty;
         TotalPrice = totalPrice;
         ItemImage = itemImage;
-//        PaymentRefNo = paymentRefNo;
+        PaymentRefNo = paymentRefNo;
     }
 
     public String getItemName() {
@@ -69,12 +69,12 @@ public class Product {
     public void setItemImage(String itemImage) {
         ItemImage = itemImage;
     }
-/*
-    public Double getPaymentRefNo() {
+
+    public String getPaymentRefNo() {
         return(PaymentRefNo);
     }
 
-    public void setPaymentRefNo(Double paymentRefNo) {
+    public void setPaymentRefNo(String paymentRefNo) {
         PaymentRefNo = paymentRefNo;
-    }*/
+    }
 }

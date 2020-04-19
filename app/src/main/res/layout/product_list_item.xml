@@ -40,14 +40,6 @@
         tools:layout_editor_absoluteY="26dp" />
 
     <TextView
-        android:id="@+id/tv_itemImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="17dp"
-        tools:layout_editor_absoluteY="49dp" />
-
-    <TextView
         android:id="@+id/tv_paymentRefNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

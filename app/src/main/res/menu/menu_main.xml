@@ -27,12 +27,6 @@
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/rateUs"
-        android:icon="@drawable/customerreview"
-        android:title="Rate Us"
-        app:showAsAction="never">
-    </item>
-    <item
         android:id="@+id/logOut"
         android:icon="@drawable/signout"
         android:title="Logout"

@@ -1,67 +1,70 @@
 package com.example.smartpay;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.smartpay.Adapter.RecyclerView_Config;
-import com.example.smartpay.Dto.FirebaseDatabaseHelper;
+import com.example.smartpay.Adapter.ProductsAdapter;
 import com.example.smartpay.Dto.Product;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionActivity extends AppCompatActivity {
 
-    TextView dateTime;
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
+    ProductsAdapter adapter;
+    List<Product> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
-        /*dateTime = findViewById(R.id.tvDateTime);
-        String currentDateTimeString = java.text.DateFormat.getDateTimeInstance().format(new Date());
-        dateTime.setText(currentDateTimeString);
+        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
+        String num = sp.getString("NUM_KEY", null);
 
-        CardView cardView = findViewById(R.id.cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        productList = new ArrayList<>();
+
+        DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData");
+
+        dbProducts.child(num).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(TransactionActivity.this);
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.bottomsheet,
-                        (LinearLayout)findViewById(R.id.bottomsheet));
-                bottomSheetDialog.setContentView(view);
-                bottomSheetDialog.show();
-            }
-        });*/
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-        recyclerView = findViewById(R.id.recyclerview_products);
-        new FirebaseDatabaseHelper().ReadProducts(new FirebaseDatabaseHelper.DataStatus() {
-            @Override
-            public void DataIsLoaded(List<Product> products, List<String> keys) {
-                new RecyclerView_Config().setConfig(recyclerView,TransactionActivity.this, products, keys);
+                if (dataSnapshot.exists()) {
 
-            }
+                    for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                        Product p = productSnapshot.getValue(Product.class);
+                        productList.add(p);
+                    }
 
-            @Override
-            public void DataIsInserted() {
+                    adapter = new ProductsAdapter(TransactionActivity.this, productList);
+                    recyclerView.setAdapter(adapter);
 
-            }
-
-            @Override
-            public void DataIsUpdated() {
+                }
 
             }
 
             @Override
-            public void DataIsDeleted() {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
-
     }
-
 }

@@ -65,7 +65,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         String userEmailNote = email.getText().toString();
         ImageView imageNote = findViewById(R.id.imageView);
 
-        /*if (userEmailNote.isEmpty()){
+        if (userEmailNote.isEmpty()){
             Toast.makeText(ProfileEditActivity.this, "Fill the details!", Toast.LENGTH_SHORT).show();
         }else {
             Intent homeIntent = new Intent(getApplicationContext(), UserActivity.class);
@@ -75,16 +75,9 @@ public class ProfileEditActivity extends AppCompatActivity {
             editor.putString("EMAIL_KEY",userEmailNote);
             editor.apply();
             startActivity(homeIntent);
-            finish();
-        }*/
-        Intent homeIntent = new Intent(getApplicationContext(), UserActivity.class);
-        SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("NAME_KEY", userNameNote);
-        editor.putString("EMAIL_KEY",userEmailNote);
-        editor.apply();
-        startActivity(homeIntent);
-        finish();
+
+        }
+
     }
 
     @Override

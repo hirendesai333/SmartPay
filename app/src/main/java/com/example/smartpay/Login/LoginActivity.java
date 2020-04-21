@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.smartpay.Dto.User;
 import com.example.smartpay.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar mLoginProgress;
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    
+
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabaseReference = mDatabase.getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String country_code = mCountryCode.getText().toString();
                 String phone_number = mPhoneNumber.getText().toString();
-
+                String user_name = mUserName.getText().toString();
                 String complete_phone_number = "+" + country_code + phone_number;
 
                 if(country_code.isEmpty() || phone_number.isEmpty()){
@@ -75,6 +81,9 @@ public class LoginActivity extends AppCompatActivity {
                             mCallbacks
                     );
                 }
+
+
+
             }
         });
 
@@ -101,11 +110,19 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent otpIntent = new Intent(LoginActivity.this, OtpActivity.class);
                                 otpIntent.putExtra("AuthCredentials", s);
 
+                                String user_name = mUserName.getText().toString();
+                                String phone_number = mPhoneNumber.getText().toString();
+
                                 SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
-                                editor.putString("NAME_KEY", mUserName.getText().toString());
-                                editor.putString("NUM_KEY",mPhoneNumber.getText().toString());
+                                editor.putString("NAME_KEY", user_name);
+                                editor.putString("NUM_KEY",phone_number);
                                 editor.apply();
+
+                                User user = new User(user_name,phone_number);
+                                String user_id = String.valueOf(mAuth.getCurrentUser());
+                                mDatabaseReference = mDatabase.getReference("Users").child(user_id);
+                                mDatabaseReference.setValue(user);
 
                                 startActivity(otpIntent);
                             }
@@ -149,11 +166,19 @@ public class LoginActivity extends AppCompatActivity {
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
+        String user_name = mUserName.getText().toString();
+        String phone_number = mPhoneNumber.getText().toString();
+
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString("NAME_KEY", mUserName.getText().toString());
-        editor.putString("NUM_KEY",mPhoneNumber.getText().toString());
+        editor.putString("NAME_KEY", user_name);
+        editor.putString("NUM_KEY",phone_number);
         editor.apply();
+
+        User user = new User(user_name,phone_number);
+        String user_id = mAuth.getCurrentUser().getUid();
+        mDatabaseReference = mDatabase.getReference("Users").child(user_id);
+        mDatabaseReference.setValue(user);
 
         startActivity(homeIntent);
         finish();

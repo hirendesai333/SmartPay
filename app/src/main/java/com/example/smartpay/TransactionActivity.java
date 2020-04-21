@@ -52,12 +52,9 @@ public class TransactionActivity extends AppCompatActivity {
                         Product p = productSnapshot.getValue(Product.class);
                         productList.add(p);
                     }
-
                     adapter = new ProductsAdapter(TransactionActivity.this, productList);
                     recyclerView.setAdapter(adapter);
-
                 }
-
             }
 
             @Override

@@ -36,9 +36,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         Product product = productList.get(position);
 
         holder.textViewName.setText(product.getItemName());
-        holder.textViewQty.setText(product.getQty());
-        holder.textViewWeight.setText(product.getWeight());
-        holder.textViewPrice.setText(product.getPrice());
+        holder.textViewQty.setText(product.getQty()+""+product.getWeight());
+//        holder.textViewWeight.setText(product.getWeight());
+        holder.textViewPrice.setText("₹ "+product.getPrice());
         holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
         holder.textViewTotalPrice.setText(product.getTotalPrice());
 

@@ -116,50 +116,6 @@ public class ScanBarcode extends AppCompatActivity{
 
             }
         });
-//        demoref.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                Log.d("Item Name 2--->", String.valueOf(dataSnapshot.getChildrenCount()));
-//
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-//                    String strItemName = dataSnapshot1.child("ItemName").getValue(String.class);
-////                    Log.d("Item Name 1--->", strItemName);
-//
-//                }
-//
-////                String strItemImage = dataSnapshot.child("ItemImage").getValue().toString();
-////                String strItemName = dataSnapshot.child("ItemName").getValue().toString();
-////                String strPaymentNo = dataSnapshot.child("PaymentReNo").getValue().toString();
-////                String strItemPrice = dataSnapshot.child("Price").getValue().toString();
-////                String Qty = dataSnapshot.child("Qty").getValue().toString();
-////                String strTotal= dataSnapshot.child("TotalPrice").getValue().toString();
-////                String strItemweight = dataSnapshot.child("Weight").getValue().toString();
-////                OrderedListItem value = new OrderedListItem(strItemImage,strItemName,strPaymentNo,
-////                        strItemPrice,Qty,strTotal,strItemweight);
-////                test.add(value);
-////                Log.d("Size ---> ", String.valueOf(test.size()));
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         new IntentIntegrator(this)
                 .setOrientationLocked(false)
@@ -280,8 +236,6 @@ public class ScanBarcode extends AppCompatActivity{
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         String num = sp.getString("NUM_KEY", null);
 
-//        String id = itemRef.push().getKey();
-
         Map<String, Object> productMap = new HashMap<>();
 
         if (results.size()>0){
@@ -302,11 +256,10 @@ public class ScanBarcode extends AppCompatActivity{
                         map.put("PaymentRefNo", paymentRefNo);
 
                         productMap.put(String.valueOf(i),map);
-                        itemRef.child(num).updateChildren(productMap);
-//
-//                        Log.d("Key --->", id);
-//                        Log.d("start --->", i + "");
+                        itemRef.child(num).child(paymentRefNo).updateChildren(productMap);
+
                     }
+
         }
 
     }

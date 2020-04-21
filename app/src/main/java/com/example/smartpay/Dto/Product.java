@@ -37,7 +37,7 @@ public class Product {
     }
 
     public String getTotalPrice() {
-        return TotalPrice;
+        return "₹ "+TotalPrice;
     }
 
     public String getPaymentRefNo() {

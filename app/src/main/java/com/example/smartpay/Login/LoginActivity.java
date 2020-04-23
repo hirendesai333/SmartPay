@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.smartpay.Dto.User;
 import com.example.smartpay.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
@@ -43,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference mDatabaseReference = mDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,11 +116,6 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("NUM_KEY",phone_number);
                                 editor.apply();
 
-                                User user = new User(user_name,phone_number);
-                                String user_id = String.valueOf(mAuth.getCurrentUser());
-                                mDatabaseReference = mDatabase.getReference("Users").child(user_id);
-                                mDatabaseReference.setValue(user);
-
                                 startActivity(otpIntent);
                             }
                         },
@@ -174,11 +166,6 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("NAME_KEY", user_name);
         editor.putString("NUM_KEY",phone_number);
         editor.apply();
-
-        User user = new User(user_name,phone_number);
-        String user_id = mAuth.getCurrentUser().getUid();
-        mDatabaseReference = mDatabase.getReference("Users").child(user_id);
-        mDatabaseReference.setValue(user);
 
         startActivity(homeIntent);
         finish();

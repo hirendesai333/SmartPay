@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.smartpay.Adapter.ProductsAdapter;
 import com.example.smartpay.Dto.Product;
@@ -19,12 +21,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ProductsAdapter adapter;
-    List<Product> productList;
+    List<Product> productList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +47,17 @@ public class TransactionActivity extends AppCompatActivity {
 
         dbProducts.child(num).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {	
 
                 if (dataSnapshot.exists()) {
 
                     for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+
                         Product p = productSnapshot.getValue(Product.class);
                         productList.add(p);
+
                     }
+
                     adapter = new ProductsAdapter(TransactionActivity.this, productList);
                     recyclerView.setAdapter(adapter);
                 }

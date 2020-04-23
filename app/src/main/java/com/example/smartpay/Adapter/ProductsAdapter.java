@@ -35,12 +35,53 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         Product product = productList.get(position);
 
-        holder.textViewName.setText(product.getItemName());
-        holder.textViewQty.setText(product.getQty()+""+product.getWeight());
+//        if (productList.size() == 1){
+            holder.textViewName.setText(product.getItemName());
+            holder.textViewQty.setText(product.getQty()+""+product.getWeight());
 //        holder.textViewWeight.setText(product.getWeight());
-        holder.textViewPrice.setText("₹ "+product.getPrice());
-        holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
-        holder.textViewTotalPrice.setText(product.getTotalPrice());
+            holder.textViewPrice.setText("₹ "+product.getPrice());
+            holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+            holder.textViewTotalPrice.setText(product.getTotalPrice());
+//        }else {
+
+
+
+
+//        String str  = product.getPaymentRefNo();
+//
+//        for (int i = 0; i < productList.size(); i++) {
+//            String m = productList.get(i).getPaymentRefNo();
+//            if (m.equals(str)) {
+//                holder.textViewName.setText(product.getItemName());
+//                holder.textViewQty.setText(product.getQty()+""+product.getWeight());
+////        holder.textViewWeight.setText(product.getWeight());
+//                holder.textViewPrice.setText("₹ "+product.getPrice());
+////                holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+////                holder.textViewTotalPrice.setText(product.getTotalPrice());
+//                break;
+//            } else {
+//                if (productList.size() == (i + 1)) {
+//                    holder.textViewName.setText(product.getItemName());
+//                    holder.textViewQty.setText(product.getQty()+""+product.getWeight());
+////        holder.textViewWeight.setText(product.getWeight());
+//                    holder.textViewPrice.setText("₹ "+product.getPrice());
+//                    holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+//                    holder.textViewTotalPrice.setText(product.getTotalPrice());
+//                } else {
+//                    if (productList.size() == (i + 1)) {
+//                        holder.textViewName.setText(product.getItemName());
+//                        holder.textViewQty.setText(product.getQty()+""+product.getWeight());
+////        holder.textViewWeight.setText(product.getWeight());
+//                        holder.textViewPrice.setText("₹ "+product.getPrice());
+//                        holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+//                        holder.textViewTotalPrice.setText(product.getTotalPrice());
+//                    }
+//                }
+//            }
+//        }
+
+
+
 
     }
 
@@ -62,7 +103,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             textViewPrice = itemView.findViewById(R.id.tv_itemPrice);
             textViewPaymentRefNo = itemView.findViewById(R.id.tv_paymentRefNo);
             textViewTotalPrice = itemView.findViewById(R.id.tv_totalPrice);
-
 
         }
     }

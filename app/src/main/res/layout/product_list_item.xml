@@ -20,7 +20,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/tv_itemName"
+android:visibility="gone"                android:id="@+id/tv_itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -31,6 +31,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_itemQty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,6 +43,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_itemPrice" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_itemWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,6 +54,7 @@
                 app:layout_constraintTop_toTopOf="@+id/tv_itemQty" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_itemPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

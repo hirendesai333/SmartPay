@@ -50,6 +50,7 @@ public class CustomListAdapter extends BaseAdapter {
             holder.uPrice =v.findViewById(R.id.price);
             holder.uWeight =v.findViewById(R.id.weight);
             holder.uImage = v.findViewById(R.id.imageView);
+
             v.setTag(holder);
         } else {
             holder = (ViewHolder) v.getTag();

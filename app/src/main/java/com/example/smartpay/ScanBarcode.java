@@ -54,12 +54,10 @@ public class ScanBarcode extends AppCompatActivity{
     FirebaseDatabase itemDatabase;
 
     DatabaseReference ref;
-//    DatabaseReference demoref;
     DatabaseReference itemRef;
 
     ArrayList<ListItem> list = new ArrayList<>();
     ArrayList<AddListItem> results = new ArrayList<>();
-//    ArrayList<OrderedListItem> test= new ArrayList<>();
 
     Button scanAgainBtn;
     Button checkoutBtn;
@@ -82,7 +80,6 @@ public class ScanBarcode extends AppCompatActivity{
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference("itemFruits");
-//        demoref = database.getReference("orderedData");
 
         itemDatabase = FirebaseDatabase.getInstance();
         itemRef = database.getReference("orderedData");
@@ -189,39 +186,15 @@ public class ScanBarcode extends AppCompatActivity{
                 saveInformation(approvalRefNo);
 
                 Intent notifyIntent = new Intent(this,TransactionActivity.class);
+                notifyIntent.putExtra("refno",approvalRefNo);
                 successNotification(this,"Transaction successful","Tap to see your order history",notifyIntent);
 
-
-            /*    if (list.size()>0){
-                    for (int i = 0; i<list.size();i++){
-                        String itemName = list.get(i).getName();
-                        String itemPrice = list.get(i).getPrice();
-                        String itemWeight = list.get(i).getWeight();
-                        String itemQt = list.get(i).getName();
-//                        String itemImage = list.get(i).getImage();
-                        saveInformation(itemName,itemPrice,itemWeight,itemQt,approvalRefNo);
-                    }
-                }*/
 
             } else if ("Payment cancelled by user.".equals(paymentCancel)) {
                 Toast.makeText(ScanBarcode.this, "Payment cancelled by user.", Toast.LENGTH_SHORT).show();
 
                 Intent notifyIntent = new Intent(this,MainActivity.class);
                 cancelNotification(this,"Payment cancelled by user!","",notifyIntent);
-
-                //                saveInformation();
-
-
-//                if (list.size()>0){
-//                    for (int i = 0; i<list.size();i++){
-//                        String itemName = list.get(i).getName();
-//                        String itemPrice = list.get(i).getPrice();
-//                        String itemWeight = list.get(i).getWeight();
-//                        String itemQt = list.get(i).getName();
-//                        String itemImage = list.get(i).getImage();
-//                        saveInformation(itemName,itemPrice,itemWeight,itemQt,itemImage);
-//                    }
-//                }
 
             } else {
                 Toast.makeText(ScanBarcode.this, "Transaction failed.Please try again", Toast.LENGTH_SHORT).show();
@@ -259,9 +232,7 @@ public class ScanBarcode extends AppCompatActivity{
                         itemRef.child(num).child(paymentRefNo).updateChildren(productMap);
 
                     }
-
         }
-
     }
 
     public static boolean isConnectionAvailable(Context context) {

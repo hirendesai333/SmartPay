@@ -7,9 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.example.smartpay.Adapter.ProductsAdapter;
 import com.example.smartpay.Dto.Product;
@@ -22,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionActivity extends AppCompatActivity {
+public class ViewActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ProductsAdapter adapter;
@@ -31,7 +28,7 @@ public class TransactionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction);
+        setContentView(R.layout.activity_view);
 
         SharedPreferences sp = getSharedPreferences("mysharedpref", MODE_PRIVATE);
         final String num = sp.getString("NUM_KEY", null);
@@ -42,38 +39,30 @@ public class TransactionActivity extends AppCompatActivity {
 
         productList = new ArrayList();
 
-//        DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData").child(num);
         DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData");
-        DatabaseReference dbProductChild = dbProducts.child("8980934200");
-        DatabaseReference dbProductChild1 = dbProductChild.child("012020000066");
 
-        dbProductChild1.addListenerForSingleValueEvent(new ValueEventListener() {
+        dbProducts.child(num).child("012020000066").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-            Log.d("Count --->" , String.valueOf(dataSnapshot.getChildrenCount()));
-            Log.d("Child --->" , String.valueOf(dataSnapshot.getChildren()));
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                        Log.d("Count 1 --->" , String.valueOf(productSnapshot.getChildrenCount()));
-
-
-                            Product p = productSnapshot.getValue(Product.class);
+                        Product p = productSnapshot.getValue(Product.class);
                         productList.add(p);
 
                     }
                 }
-//
-                adapter = new ProductsAdapter(TransactionActivity.this, productList);
+
+                adapter = new ProductsAdapter(ViewActivity.this, productList);
                 recyclerView.setAdapter(adapter);
 
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
 
         });
-
     }
 }

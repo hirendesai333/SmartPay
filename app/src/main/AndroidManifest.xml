@@ -21,10 +21,12 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme">
-        <activity android:name=".TransactionActivity"
+        <activity android:name=".ViewActivity"></activity>
+        <activity
+            android:name=".TransactionActivity"
             android:label="Transaction History"
             android:parentActivityName=".Login.MainActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".IndoorActivity"
             android:screenOrientation="landscape" />

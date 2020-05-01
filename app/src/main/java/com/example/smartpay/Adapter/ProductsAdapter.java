@@ -1,6 +1,8 @@
 package com.example.smartpay.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartpay.Dto.Product;
 import com.example.smartpay.R;
+import com.example.smartpay.ViewActivity;
 
 import java.util.List;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>{
+public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductViewHolder> {
 
     Context mCtx;
     List<Product> productList;
@@ -33,54 +36,86 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mCtx, ViewActivity.class);
+                mCtx.startActivity(intent);
+            }
+        });
+
         Product product = productList.get(position);
 
-//        if (productList.size() == 1){
-            holder.textViewName.setText(product.getItemName());
-            holder.textViewQty.setText(product.getQty()+""+product.getWeight());
-//        holder.textViewWeight.setText(product.getWeight());
-            holder.textViewPrice.setText("₹ "+product.getPrice());
-            holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
-            holder.textViewTotalPrice.setText(product.getTotalPrice());
-//        }else {
+//        holder.textViewName.setText(product.getItemName());
+//        holder.textViewQty.setText(product.getQty()+""+product.getWeight());
+//        holder.textViewPrice.setText("₹ "+product.getPrice());
+        holder.textViewTotalPrice.setText(String.valueOf(product.getTotalPrice()));
+        holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
 
 
-
-
-//        String str  = product.getPaymentRefNo();
-//
 //        for (int i = 0; i < productList.size(); i++) {
-//            String m = productList.get(i).getPaymentRefNo();
-//            if (m.equals(str)) {
-//                holder.textViewName.setText(product.getItemName());
-//                holder.textViewQty.setText(product.getQty()+""+product.getWeight());
-////        holder.textViewWeight.setText(product.getWeight());
-//                holder.textViewPrice.setText("₹ "+product.getPrice());
-////                holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
-////                holder.textViewTotalPrice.setText(product.getTotalPrice());
-//                break;
+//            Product product = productList.get(i);
+//            String strFirstRefNum = productList.get(0).getPaymentRefNo();
+//            if (i == 0) {
+//                Log.d("Start --->", "1");
+//                holder.textViewTotalPrice.setText(String.valueOf(productList.get(0).getTotalPrice()));
+//                holder.textViewPaymentRefNo.setText(productList.get(0).getPaymentRefNo());
 //            } else {
-//                if (productList.size() == (i + 1)) {
-//                    holder.textViewName.setText(product.getItemName());
-//                    holder.textViewQty.setText(product.getQty()+""+product.getWeight());
-////        holder.textViewWeight.setText(product.getWeight());
-//                    holder.textViewPrice.setText("₹ "+product.getPrice());
-//                    holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
-//                    holder.textViewTotalPrice.setText(product.getTotalPrice());
+//                Log.d("Start --->", "2");
+//                if (i > 0) {
+//                    Log.d("Start --->", "21");
+//
+//                    for (int j = 1; j < productList.size(); j++) {
+//                        Log.d("Start --->", "3");
+//
+//                        String strRefNum = product.getPaymentRefNo();
+//                        if (strRefNum.equals(strFirstRefNum)) {
+//                            Log.d("Start --->", "4");
+//
+//                        } else {
+//                            Log.d("Start --->", "5");
+//
+//                            if (productList.size() == (j + 1)) {
+//                                Log.d("Start --->", "6");
+//
+//                                holder.textViewTotalPrice.setText(String.valueOf(product.getTotalPrice()));
+//                                holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+//                            } else {
+//                                Log.d("Start --->", "7");
+//
+//                                if (productList.size() == (j + 1)) {
+//                                    Log.d("Start --->", "8");
+//
+//                                    holder.textViewTotalPrice.setText(String.valueOf(product.getTotalPrice()));
+//                                    holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+//                                }
+//                            }
+//                        }
+//                    }
 //                } else {
+//                    Log.d("Start --->", "9");
+//
 //                    if (productList.size() == (i + 1)) {
-//                        holder.textViewName.setText(product.getItemName());
-//                        holder.textViewQty.setText(product.getQty()+""+product.getWeight());
-////        holder.textViewWeight.setText(product.getWeight());
-//                        holder.textViewPrice.setText("₹ "+product.getPrice());
+//                        Log.d("Start --->", "10");
+//
+//                        holder.textViewTotalPrice.setText(String.valueOf(product.getTotalPrice()));
 //                        holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
-//                        holder.textViewTotalPrice.setText(product.getTotalPrice());
+//                    } else {
+//                        Log.d("Start --->", "7");
+//
+//                        if (productList.size() == (i + 1)) {
+//                            Log.d("Start --->", "11");
+//
+//                            holder.textViewTotalPrice.setText(String.valueOf(product.getTotalPrice()));
+//                            holder.textViewPaymentRefNo.setText(product.getPaymentRefNo());
+//                        }
 //                    }
 //                }
 //            }
+//
+//
 //        }
-
-
 
 
     }
@@ -92,7 +127,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewName, textViewQty, textViewWeight, textViewPrice,textViewPaymentRefNo,textViewTotalPrice;
+        TextView textViewName, textViewQty, textViewWeight, textViewPrice, textViewPaymentRefNo, textViewTotalPrice;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
@@ -103,6 +138,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             textViewPrice = itemView.findViewById(R.id.tv_itemPrice);
             textViewPaymentRefNo = itemView.findViewById(R.id.tv_paymentRefNo);
             textViewTotalPrice = itemView.findViewById(R.id.tv_totalPrice);
+
 
         }
     }

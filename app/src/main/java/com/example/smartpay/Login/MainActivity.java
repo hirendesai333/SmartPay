@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -119,8 +120,12 @@ public class MainActivity extends AppCompatActivity {
         findStoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);*/
+
+
+
+
             }
         });
 

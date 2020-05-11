@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.example.smartpay.Adapter.ProductsAdapter;
 import com.example.smartpay.Dto.Product;
@@ -42,8 +40,8 @@ public class TransactionActivity extends AppCompatActivity {
 
         productList = new ArrayList();
 
-//        DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData").child(num);
-        DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData");
+        DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData").child(num);
+//        DatabaseReference dbProducts = FirebaseDatabase.getInstance().getReference("orderedData");
         DatabaseReference dbProductChild = dbProducts.child("8980934200");
         DatabaseReference dbProductChild1 = dbProductChild.child("012020000066");
 
@@ -57,13 +55,12 @@ public class TransactionActivity extends AppCompatActivity {
                     for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                         Log.d("Count 1 --->" , String.valueOf(productSnapshot.getChildrenCount()));
 
-
-                            Product p = productSnapshot.getValue(Product.class);
+                        Product p = productSnapshot.getValue(Product.class);
                         productList.add(p);
 
                     }
                 }
-//
+
                 adapter = new ProductsAdapter(TransactionActivity.this, productList);
                 recyclerView.setAdapter(adapter);
 

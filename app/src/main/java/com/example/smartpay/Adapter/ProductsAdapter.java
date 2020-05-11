@@ -139,7 +139,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             textViewPaymentRefNo = itemView.findViewById(R.id.tv_paymentRefNo);
             textViewTotalPrice = itemView.findViewById(R.id.tv_totalPrice);
 
-
         }
     }
 

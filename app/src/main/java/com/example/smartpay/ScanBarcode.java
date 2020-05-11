@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,15 +30,12 @@ import android.widget.Toast;
 import com.example.smartpay.Adapter.CustomListAdapter;
 import com.example.smartpay.Dto.AddListItem;
 import com.example.smartpay.Dto.ListItem;
-import com.example.smartpay.Dto.OrderedListItem;
-import com.example.smartpay.Dto.itemInformation;
 import com.example.smartpay.Login.MainActivity;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
